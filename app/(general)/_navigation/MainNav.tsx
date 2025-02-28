@@ -1,0 +1,153 @@
+"use client";
+
+import Link from "next/link";
+import {
+  createContext,
+  PropsWithChildren,
+  ReactElement,
+  ReactNode,
+  useContext,
+  useState,
+} from "react";
+import { useOutsideClick } from "../_hooks/useOutsideClick";
+
+type MainNavContext = {
+  toggleMenu: () => void;
+};
+
+type MainNavProps = PropsWithChildren & {
+  isActive: boolean;
+  toggleMenu: () => void;
+};
+
+type NavRowWithTo = {
+  children: ReactNode;
+  href: string;
+  nestedLinks?: never;
+};
+
+type NavRowWithLinks = {
+  children: ReactNode;
+  href?: never;
+  nestedLinks: ReactElement;
+};
+
+type NavRowProps = NavRowWithTo | NavRowWithLinks;
+
+type NavRowNested = {
+  children: ReactNode;
+  href: string;
+};
+
+const MainNavContext = createContext<MainNavContext | null>(null);
+
+const useMainNavContext = () => {
+  const context = useContext(MainNavContext);
+
+  if (!context) {
+    throw new Error(
+      "useMainNavContext has to be used within <MainNavContext.Provider>",
+    );
+  }
+
+  return context;
+};
+
+export default function MainNav({
+  children,
+  isActive,
+  toggleMenu,
+}: MainNavProps) {
+  const ref = useOutsideClick(() => {
+    if (isActive) toggleMenu();
+  });
+
+  return (
+    <MainNavContext.Provider value={{ toggleMenu }}>
+      <nav
+        ref={ref}
+        className={`absolute left-0 top-0 h-dvh w-72 border-r-[1px] border-r-dark-100 py-3 backdrop-blur-md ${
+          isActive ? "translate-x-0" : "-translate-x-full"
+        } flex transition-transform xl:static xl:h-[50px] xl:w-full xl:translate-x-0 xl:border-none xl:bg-light-100 xl:p-0`}
+      >
+        <ul className="lg:items-top mx-auto flex w-4/5 flex-col justify-center space-y-2 lg:flex-row lg:space-y-0">
+          {children}
+        </ul>
+      </nav>
+    </MainNavContext.Provider>
+  );
+}
+
+function NavRow({ children, href, nestedLinks }: NavRowProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isHover, setIsHover] = useState(false);
+  const { toggleMenu } = useMainNavContext();
+
+  function toggle() {
+    if (!isHover) setIsOpen((isOpen) => !isOpen);
+  }
+
+  if (!href)
+    return (
+      <li
+        onClick={toggle}
+        onMouseEnter={() => {
+          setIsOpen(true);
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsOpen(false);
+          setIsHover(false);
+        }}
+        className="w-full max-w-[250px] cursor-default rounded-md text-2xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-light-100"
+      >
+        <span className="flex flex-col items-center py-2">
+          <div className="flex w-full items-center justify-center gap-4 px-4">
+            {children}
+          </div>
+
+          <ul
+            className={`w-full divide-y-2 divide-light-200 overflow-hidden px-4 lg:divide-y-0 lg:px-0 lg:pl-4 ${isOpen ? "mt-2 max-h-96 lg:mt-[10px]" : "max-h-0"} transition-all`}
+          >
+            {nestedLinks}
+          </ul>
+        </span>
+      </li>
+    );
+
+  return (
+    <li className="w-full max-w-[250px] rounded-md text-center">
+      <Link
+        href={href}
+        className="flex items-center justify-center gap-4 rounded-md px-4 py-2 text-2xl text-dark-200 transition-colors hover:bg-green-600 hover:text-white"
+        onClick={toggleMenu}
+      >
+        {children}
+      </Link>
+    </li>
+  );
+}
+
+function NavRowNested({ children, href }: NavRowNested) {
+  const { toggleMenu } = useMainNavContext();
+
+  return (
+    <li
+      className="overflow-hidden first-of-type:rounded-t-md last-of-type:rounded-b-md lg:first-of-type:rounded-none lg:last-of-type:rounded-none"
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleMenu();
+      }}
+    >
+      <Link
+        className="ml-auto block w-full border-dark-100 bg-light-100 px-2 py-2 text-base text-dark-200 transition-colors hover:border-primary-100 hover:bg-light-200 lg:ml-0 lg:rounded-none lg:rounded-r-md lg:border-l-[2px] lg:text-xl"
+        href={href}
+      >
+        {children}
+      </Link>
+    </li>
+  );
+}
+
+MainNav.NavRow = NavRow;
+MainNav.NavRowNested = NavRowNested;
