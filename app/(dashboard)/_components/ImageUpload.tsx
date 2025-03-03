@@ -52,7 +52,6 @@ const ImageUpload = ({
         </label>
       </div>
 
-
       <input
         type="file"
         accept="image/*"
@@ -60,6 +59,7 @@ const ImageUpload = ({
         onChange={handleImageChange}
         className="hidden"
         id={id}
+        name={id}
       />
 
       <div className="flex flex-wrap gap-2">

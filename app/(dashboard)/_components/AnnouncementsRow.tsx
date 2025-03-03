@@ -38,10 +38,10 @@ function AnnouncementsRow({
       <div>{announcement.animal}</div>
       <div>{announcement.age}</div>
       <div>
-        {day}-{month < 10 ? `0${month}` : month}-{year}
+        {day < 10 ? `0${day}` : day}-{month < 10 ? `0${month}` : month}-{year}
       </div>
       <div>
-        <RowDropdownMenu />
+        <RowDropdownMenu id={announcement.id}/>
       </div>
     </div>
   );

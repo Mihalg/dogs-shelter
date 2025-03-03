@@ -1,6 +1,6 @@
 "use client";
 
-import { login } from "@/app/_actions/auth";
+import { login } from "@/app/_lib/actions";
 import { useActionState } from "react";
 
 function LoginPage() {
