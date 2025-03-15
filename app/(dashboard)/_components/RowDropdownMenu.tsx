@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ModalTrigger } from "./Modal";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import { usePathname, useRouter } from "next/navigation";
+import { deleteAnnouncement } from "@/app/_lib/actions";
+import { Button } from "./Button";
 
 function RowDropdownMenu({ id }: { id: number }) {
   const [open, setIsOpen] = useState(false);
@@ -32,14 +34,15 @@ function RowDropdownMenu({ id }: { id: number }) {
           >
             Edytuj
           </ModalTrigger>
-          <ModalTrigger
+          <Button
             onClick={() => {
               setIsOpen(false);
+              deleteAnnouncement(id);
             }}
             className="w-full bg-transparent text-dark-200 shadow-none transition-colors hover:bg-primary-100 hover:text-white"
           >
             Usuń
-          </ModalTrigger>
+          </Button>
         </div>
       </PopoverContent>
     </Popover>

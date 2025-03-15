@@ -1,13 +1,11 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import {
   createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import { Button } from "./Button";
@@ -15,13 +13,11 @@ import { Button } from "./Button";
 type ModalContextTypes = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const ModalContext = createContext<ModalContextTypes | null>(null);
 
-export const useModalContext = () => {
+const useModalContext = () => {
   const context = useContext(ModalContext);
 
   if (!context) {
@@ -34,44 +30,22 @@ export const useModalContext = () => {
 };
 
 export function Modal({ children }: { children: ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (!isOpen) router.push(pathname);
-  }, [isOpen, pathname, router]);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <ModalContext.Provider
-      value={{ isOpen, setIsOpen, isLoading, setIsLoading }}
-    >
+    <ModalContext.Provider value={{ isOpen, setIsOpen }}>
       {children}
     </ModalContext.Provider>
   );
 }
 
-export function ModalTrigger({
-  loading = false,
-  children,
-  className,
-  onClick,
-}: {
-  loading?: boolean;
-  children: ReactNode;
-  className?: string;
-  onClick?: () => void;
-}) {
-  const { setIsOpen, setIsLoading } = useModalContext();
+export function ModalTrigger({ children }: { children: ReactNode }) {
+  const { setIsOpen } = useModalContext();
 
   return (
     <Button
-      className={className}
       onClick={() => {
         setIsOpen((open) => !open);
-        onClick?.();
-        setIsLoading(loading);
       }}
     >
       {children}
@@ -93,6 +67,7 @@ export function ModalContent({ children }: { children: ReactNode }) {
         >
           &#10005;
         </button>
+
         {children}
       </div>
     </div>

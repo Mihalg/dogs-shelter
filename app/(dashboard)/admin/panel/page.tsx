@@ -9,7 +9,7 @@ async function Dashboard() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/");
+    redirect("/admin");
   } else redirect("/admin/panel/aktualnosci");
 }
 

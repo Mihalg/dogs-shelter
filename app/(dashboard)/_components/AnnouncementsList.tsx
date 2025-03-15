@@ -8,16 +8,16 @@ async function AnnouncementsList() {
     .from("announcements")
     .select("id, main_image, name, animal, gender, age, created_at");
 
-  return announcements ? (
+  return announcements?.length ? (
     announcements?.map((announcement) => (
       <AnnouncementsRow
         key={announcement.id}
         announcement={announcement}
-        columnsTemplate="1fr_1fr_1fr_1fr_1fr_1fr_0.4fr"
+        columnsTemplate="1fr_1fr_1fr_1fr_1fr_0.4fr"
       />
     ))
   ) : (
-    <p className="mt-8 w-full text-center text-xl">Brak ogłoszeń</p>
+    <p className="mt-10 w-full text-center text-2xl">Brak ogłoszeń</p>
   );
 }
 

@@ -1,30 +1,59 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, SetStateAction, Dispatch } from "react";
+
+type SingleImageUploadProps = {
+  multiple?: false;
+  id: string;
+  defaultUrls?: string[] | undefined;
+  setImages: Dispatch<SetStateAction<File[]>>;
+  maxFiles?: 1;
+  images: File[];
+};
+
+type MultipleImagesUploadProps = {
+  multiple: true;
+  id: string;
+  defaultUrls?: string[] | undefined;
+  setImages: Dispatch<SetStateAction<File[]>>;
+  maxFiles?: number;
+  images: File[];
+};
+
+type ImageUploadProps = SingleImageUploadProps | MultipleImagesUploadProps;
 
 const ImageUpload = ({
   multiple = false,
   id,
-}: {
-  multiple?: boolean;
-  id: string;
-}) => {
-  const [images, setImages] = useState<File[]>([]);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  defaultUrls,
+  maxFiles = 5,
+  setImages,
+  images,
+}: ImageUploadProps) => {
+  const [previewUrls, setPreviewUrls] = useState<string[]>(
+    defaultUrls ? defaultUrls : [],
+  );
   const dropzoneRef = useRef<HTMLDivElement>(null);
 
   const handleFiles = (files: FileList | null) => {
     if (!files) return;
 
     const fileArray = Array.from(files);
+
+    if (fileArray.length > maxFiles) return;
+
+    console.log(maxFiles);
+
     setImages((prev) => [...prev, ...fileArray]);
 
     const urls = fileArray.map((file) => URL.createObjectURL(file));
-    setPreviewUrls((prev) => [...prev, ...urls]);
+    console.log(urls);
+    setPreviewUrls((prev) => (multiple ? [...prev, ...urls] : urls));
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     handleFiles(event.target.files);
   };
 
@@ -59,7 +88,6 @@ const ImageUpload = ({
         onChange={handleImageChange}
         className="hidden"
         id={id}
-        name={id}
       />
 
       <div className="flex flex-wrap gap-2">
@@ -69,7 +97,7 @@ const ImageUpload = ({
               width={80}
               height={60}
               src={url}
-              alt={`Preview ${index}`}
+              alt={`Podgląd ${index}`}
               className="h-24 w-24 rounded-md border object-cover"
             />
             <button

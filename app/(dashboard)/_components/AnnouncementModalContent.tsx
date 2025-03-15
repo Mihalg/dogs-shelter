@@ -5,31 +5,70 @@ import ImagesUpload from "@/app/(dashboard)/_components/ImageUpload";
 import { Input } from "@/app/(dashboard)/_components/Input";
 import { Label } from "@/app/(dashboard)/_components/Label";
 import { Textarea } from "@/app/(dashboard)/_components/Textarea";
-import { createAnnouncement } from "@/app/_lib/actions";
-import { getAnnouncementData } from "@/app/_lib/services";
+import { createEditAnnouncement } from "@/app/_lib/actions";
+import { getAnnouncementData, getImages } from "@/app/_lib/services";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useModalContext } from "./Modal";
 import Spinner from "./Spinner";
 
+type Announcement = {
+  id: number;
+  name: string;
+  age: number;
+  animal: string;
+  gender: string;
+  description: string;
+  main_image: string;
+  images: string[];
+};
+
 export default function AccountModalContent() {
+  //get search params to fetch default data for editing
+  // if id===null user is adding new announcement
   const params = useSearchParams();
   const id = params.get("id");
-  const { isLoading, setIsLoading } = useModalContext();
 
-  const [announcement, setAnnouncement] = useState<{
-    name: string;
-    age: number;
-    animal: string;
-    gender: string;
-    description: string;
-    main_image: string;
-    images: string[];
-  } | null>(null);
+  const { isLoading, setIsLoading, setIsOpen } = useModalContext();
+  const [isPending, setIsPending] = useState(false);
 
+  // variables for handling images
+  const formRef = useRef<HTMLFormElement>(null);
+  const [mainImage, setMainImage] = useState<File[]>([]);
+  const [additionalImages, setAdditionalImages] = useState<File[]>([]);
+
+  const [announcement, setAnnouncement] = useState<Announcement | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    //adding images to formData
+    if (!formRef.current) return;
+    const formData = new FormData(formRef.current);
+
+    if (mainImage) {
+      formData.append("main_image", mainImage[0]);
+    }
+
+    additionalImages.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    setIsPending(true);
+    await createEditAnnouncement(formData);
+    setIsPending(false);
+    setIsOpen(false);
+  };
+
+  //fetches announcement if editing
   useEffect(() => {
     async function fetchData() {
       const data = await getAnnouncementData(id);
+      const images = await getImages(id);
+
+      if (images) {
+        setMainImage([images?.mainImage]);
+        setAdditionalImages(images.images);
+      }
       setAnnouncement(data);
       setIsLoading(false);
     }
@@ -43,9 +82,17 @@ export default function AccountModalContent() {
     </div>
   ) : (
     <form
-      action={createAnnouncement}
-      className="grid grid-cols-1 gap-x-8 gap-y-4 px-4 py-4 lg:grid-cols-2"
+      ref={formRef}
+      onSubmit={handleSubmit}
+      className="grid grid-cols-1 gap-x-8 gap-y-4 px-4 py-4 lg:grid-cols-3"
     >
+      <input
+        className="hidden"
+        type="text"
+        name="id"
+        id="id"
+        defaultValue={announcement?.id}
+      />
       <div>
         <Label htmlFor="name">Imię</Label>
         <Input
@@ -69,18 +116,6 @@ export default function AccountModalContent() {
           <option value="samiec">Samiec</option>
         </select>
       </div>
-
-      <div>
-        <Label htmlFor="animal">Zwierzę</Label>
-        <Input
-          defaultValue={announcement?.animal}
-          required
-          id="animal"
-          name="animal"
-          type="text"
-          maxLength={25}
-        />
-      </div>
       <div>
         <Label htmlFor="age">Wiek</Label>
         <Input
@@ -91,7 +126,7 @@ export default function AccountModalContent() {
           name="age"
         />
       </div>
-      <div className="lg:col-start-1 lg:col-end-3">
+      <div className="lg:col-start-1 lg:col-end-4">
         <Label htmlFor="description">Opis</Label>
         <Textarea
           defaultValue={announcement?.description}
@@ -99,17 +134,38 @@ export default function AccountModalContent() {
           id="description"
         ></Textarea>
       </div>
-      <div>
-        <Label className="mb-4 block w-full text-center">Główne zdjęcie</Label>
-        <ImagesUpload id="main_image" />
+      <div className="lg:col-start-1 lg:col-end-4 grid grid-cols-2">
+        <div>
+          <Label className="mb-4 block w-full text-center">
+            Główne zdjęcie
+          </Label>
+          <ImagesUpload
+            id="main_image"
+            defaultUrls={
+              announcement?.main_image ? [announcement.main_image] : undefined
+            }
+            setImages={setMainImage}
+            maxFiles={1}
+            images={mainImage}
+          />
+        </div>
+        <div>
+          <Label className="mb-4 block w-full text-center">
+            Dodatkowe zdjęcia
+          </Label>
+          <ImagesUpload
+            id="images"
+            multiple={true}
+            defaultUrls={announcement?.images}
+            setImages={setAdditionalImages}
+            images={additionalImages}
+          />
+        </div>
       </div>
-      <div>
-        <Label className="mb-4 block w-full text-center">
-          Dodatkowe zdjęcia
-        </Label>
-        <ImagesUpload id="images" multiple={true} />
-      </div>
-      <Button className="ml-auto mt-auto w-40 lg:col-start-1 lg:col-end-3">
+      <Button
+        disabled={isPending}
+        className="ml-auto mt-auto w-40 lg:col-start-1 lg:col-end-4"
+      >
         Zapisz
       </Button>
     </form>

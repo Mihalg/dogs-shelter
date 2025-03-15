@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/announcements-images/**",
         search: "",
       },
+      {
+        protocol: "https",
+        hostname: "fxybknowhujafbvimnya.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/posts/**",
+        search: "",
+      },
     ],
   },
 };

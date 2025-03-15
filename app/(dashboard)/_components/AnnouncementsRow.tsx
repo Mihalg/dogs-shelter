@@ -23,7 +23,7 @@ function AnnouncementsRow({
 
   return (
     <div
-      className={`grid gap-x-2 grid-cols-[${columnsTemplate}] items-center py-2`}
+      className={`grid h-[60px] gap-x-2 grid-cols-[${columnsTemplate}] items-center py-2`}
     >
       <div>
         <Image
@@ -35,13 +35,12 @@ function AnnouncementsRow({
       </div>
       <div>{announcement.name}</div>
       <div>{announcement.gender}</div>
-      <div>{announcement.animal}</div>
       <div>{announcement.age}</div>
       <div>
         {day < 10 ? `0${day}` : day}-{month < 10 ? `0${month}` : month}-{year}
       </div>
       <div>
-        <RowDropdownMenu id={announcement.id}/>
+        <RowDropdownMenu id={announcement.id} />
       </div>
     </div>
   );
