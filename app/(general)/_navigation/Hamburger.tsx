@@ -7,7 +7,7 @@ export default function Hamburger({ onClick, isActive }: HamburgerProps) {
   return (
     <button
       onClick={onClick}
-      className={`hamburger hamburger--collapse ml-auto xl:hidden ${isActive ? "is-active pointer-events-none" : ""}`}
+      className={`hamburger hamburger--collapse ml-auto lg:hidden ${isActive ? "is-active pointer-events-none" : ""}`}
       type="button"
     >
       <span className="hamburger-box">

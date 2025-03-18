@@ -1,10 +1,16 @@
 import FacebookFeed from "./_components/FacebookFeed";
+import HeroSection from "./_components/HeroSection";
+import RecentlyFound from "./_components/RecentlyFoundSection";
 
 export default function Home() {
   return (
-    <div className="container mx-auto p-4 w-full">
-      <h1 className="mb-4 text-3xl font-bold">Aktualności</h1>
-      <FacebookFeed />
-    </div>
+    <>
+      <div className="px-6">
+        <HeroSection />
+        <FacebookFeed />
+      </div>
+      <RecentlyFound />
+      
+    </>
   );
 }

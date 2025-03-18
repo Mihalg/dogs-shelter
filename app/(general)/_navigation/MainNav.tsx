@@ -66,9 +66,9 @@ export default function MainNav({
     <MainNavContext.Provider value={{ toggleMenu }}>
       <nav
         ref={ref}
-        className={`absolute left-0 top-0 h-dvh w-72 border-r-[1px] border-r-dark-100 py-3 backdrop-blur-md ${
+        className={`fixed z-10 left-0 top-0 h-dvh w-72 border-r-[1px] border-r-dark-100 py-3 backdrop-blur-xl bg-light-100/50 ${
           isActive ? "translate-x-0" : "-translate-x-full"
-        } flex transition-transform xl:static xl:h-[50px] xl:w-full xl:translate-x-0 xl:border-none xl:bg-light-100 xl:p-0`}
+        } flex transition-transform lg:static lg:h-[50px] lg:w-full lg:translate-x-0 lg:border-none lg:bg-light-100 lg:p-0`}
       >
         <ul className="lg:items-top mx-auto flex w-4/5 flex-col justify-center space-y-2 lg:flex-row lg:space-y-0">
           {children}

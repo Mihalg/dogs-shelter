@@ -12,7 +12,7 @@ export type Database = {
       announcements: {
         Row: {
           age: number
-          animal: string
+          race: string
           created_at: string
           description: string
           gender: string
@@ -23,7 +23,7 @@ export type Database = {
         }
         Insert: {
           age: number
-          animal: string
+          race: string
           created_at?: string
           description: string
           gender: string
@@ -34,7 +34,7 @@ export type Database = {
         }
         Update: {
           age?: number
-          animal?: string
+          race?: string
           created_at?: string
           description?: string
           gender?: string

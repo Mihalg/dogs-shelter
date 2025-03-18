@@ -6,7 +6,7 @@ async function AnnouncementsList() {
 
   const { data: announcements } = await supabase
     .from("announcements")
-    .select("id, main_image, name, animal, gender, age, created_at");
+    .select("id, main_image, name, race, gender, age, created_at");
 
   return announcements?.length ? (
     announcements?.map((announcement) => (

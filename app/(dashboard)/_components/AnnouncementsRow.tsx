@@ -7,9 +7,9 @@ function AnnouncementsRow({
 }: {
   announcement: {
     id: number;
-    main_image: string;
+    main_image: string | null;
     name: string;
-    animal: string;
+    race: string;
     gender: string;
     age: number;
     created_at: string;
