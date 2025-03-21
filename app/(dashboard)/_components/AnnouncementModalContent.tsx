@@ -17,7 +17,7 @@ type Announcement = {
   name: string;
   age: number;
   animal: string;
-  gender: string;
+  sex: string;
   description: string;
   main_image: string;
   images: string[];
@@ -107,9 +107,9 @@ export default function AccountModalContent() {
       <div className="flex flex-col justify-end gap-1">
         <Label htmlFor="gender">Płeć</Label>
         <select
-          defaultValue={announcement?.gender}
-          id="gender"
-          name="gender"
+          defaultValue={announcement?.sex}
+          id="sex"
+          name="sex"
           className="h-[36px] rounded-md border-[1px] border-neutral-200 bg-white px-3"
         >
           <option value="samica">Samica</option>

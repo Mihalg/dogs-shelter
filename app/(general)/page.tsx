@@ -1,16 +1,15 @@
-import FacebookFeed from "./_components/FacebookFeed";
+import BecomeHeroSection from "./_components/BecomeHeroSection";
 import HeroSection from "./_components/HeroSection";
-import RecentlyFound from "./_components/RecentlyFoundSection";
+import LatestPosts from "./_components/LatestPosts";
+import RecentlyFoundSection from "./_components/RecentlyFoundSection";
 
 export default function Home() {
   return (
     <>
-      <div className="px-6">
-        <HeroSection />
-        <FacebookFeed />
-      </div>
-      <RecentlyFound />
-      
+      <HeroSection />
+      <LatestPosts />
+      <RecentlyFoundSection />
+      <BecomeHeroSection />
     </>
   );
 }

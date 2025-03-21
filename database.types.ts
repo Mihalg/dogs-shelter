@@ -15,10 +15,10 @@ export type Database = {
           race: string
           created_at: string
           description: string
-          gender: string
+          sex: string
           id: number
           images: string[] | null
-          main_image: string | null
+          main_image: string 
           name: string
         }
         Insert: {
@@ -26,10 +26,10 @@ export type Database = {
           race: string
           created_at?: string
           description: string
-          gender: string
+          sex: string
           id?: number
           images?: string[] | null
-          main_image?: string | null
+          main_image?: string 
           name: string
         }
         Update: {
@@ -37,10 +37,10 @@ export type Database = {
           race?: string
           created_at?: string
           description?: string
-          gender?: string
+          sex?: string
           id?: number
           images?: string[] | null
-          main_image?: string | null
+          main_image?: string 
           name?: string
         }
         Relationships: []

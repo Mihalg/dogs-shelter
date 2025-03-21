@@ -66,11 +66,11 @@ export default function MainNav({
     <MainNavContext.Provider value={{ toggleMenu }}>
       <nav
         ref={ref}
-        className={`fixed z-10 left-0 top-0 h-dvh w-72 border-r-[1px] border-r-dark-100 py-3 backdrop-blur-xl bg-light-100/50 ${
+        className={`fixed left-0 top-0 z-10 h-dvh w-72 border-r-[1px] border-r-dark-100 bg-light-100/50 py-3 backdrop-blur-xl ${
           isActive ? "translate-x-0" : "-translate-x-full"
-        } flex transition-transform lg:static lg:h-[50px] lg:w-full lg:translate-x-0 lg:border-none lg:bg-light-100 lg:p-0`}
+        } flex transition-transform lg:relative lg:h-[50px] lg:w-full lg:translate-x-0 lg:border-none lg:bg-light-100 lg:p-0`}
       >
-        <ul className="lg:items-top mx-auto flex w-4/5 flex-col justify-center space-y-2 lg:flex-row lg:space-y-0">
+        <ul className="lg:w-full mx-auto flex w-4/5 flex-col justify-center space-y-2 lg:flex-row lg:space-y-0 lg:px-4">
           {children}
         </ul>
       </nav>
@@ -99,7 +99,7 @@ function NavRow({ children, href, nestedLinks }: NavRowProps) {
           setIsOpen(false);
           setIsHover(false);
         }}
-        className="w-full max-w-[250px] cursor-default rounded-md text-2xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-light-100"
+        className="h-[50px] w-full max-w-[250px] cursor-default rounded-md text-2xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-light-100"
       >
         <span className="flex flex-col items-center py-2">
           <div className="flex w-full items-center justify-center gap-4 px-4">
@@ -116,10 +116,10 @@ function NavRow({ children, href, nestedLinks }: NavRowProps) {
     );
 
   return (
-    <li className="w-full max-w-[250px] rounded-md text-center">
+    <li className="h-[50px] w-full max-w-[250px] min-w-[200px] rounded-md text-center">
       <Link
         href={href}
-        className="flex items-center justify-center gap-4 rounded-md px-4 py-2 text-2xl text-dark-200 transition-colors hover:bg-green-600 hover:text-white"
+        className="flex h-full items-center justify-center gap-4 rounded-md px-4 py-2 text-2xl text-dark-200 transition-colors hover:bg-green-600 hover:text-white"
         onClick={toggleMenu}
       >
         {children}
