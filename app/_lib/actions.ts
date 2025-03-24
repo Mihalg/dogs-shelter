@@ -77,18 +77,18 @@ export async function createEditAnnouncement(formData: FormData) {
   const images = formData.getAll("images") as File[] | null;
   const name = formData.get("name") as string | null;
   const age = formData.get("age") as number | null;
-  const animal = formData.get("animal") as string | null;
+  const breed = formData.get("breed") as string | null;
   const description = formData.get("description") as string | null;
-  const gender = formData.get("gender") as string | null;
+  const sex = formData.get("sex") as string | null;
 
   if (
     !main_image ||
     !images ||
     !name ||
     !age ||
-    !animal ||
+    !breed ||
     !description ||
-    !gender
+    !sex
   ) {
     throw new Error("Podano błędne dane w formularzu");
   }
@@ -101,9 +101,9 @@ export async function createEditAnnouncement(formData: FormData) {
       .insert({
         name,
         age,
-        animal,
+        breed,
         description,
-        gender,
+        sex,
         images: null,
         main_image: null,
       })
@@ -117,37 +117,37 @@ export async function createEditAnnouncement(formData: FormData) {
     addImages(data.id);
   } else {
     //If id user is editing existing announcement
-    await supabase.storage.from("announcements-images").remove([`${id}`]);
     const { data, error } = await supabase
-      .from("announcements")
-      .update({
-        name,
-        age,
-        animal,
-        description,
-        gender,
-      })
-      .eq("id", +id)
-      .select()
-      .single();
-
+    .from("announcements")
+    .update({
+      name,
+      age,
+      breed,
+      description,
+      sex,
+    })
+    .eq("id", +id)
+    .select()
+    .single();
+    
     if (error) {
       console.log(error);
       throw new Error("Wystąpił nieoczekiwany błąd...");
     }
-
+    
     //Deleting old images and replacing them with new from formData
     const { success: mainFolderSucces, message: mainFolderMessage } =
-      await deleteFolder("announcements-images", `${data.id}/main`);
-
+    await deleteFolder("announcements-images", `${data.id}/main`);
+    
     if (!mainFolderSucces) throw new Error(mainFolderMessage);
+    
+    await supabase.storage.from("announcements-images").remove([`${id}`]);
+    // const { success, message } = await deleteFolder(
+    //   "announcements-images",
+    //   `${data.id}`,
+    // );
 
-    const { success, message } = await deleteFolder(
-      "announcements-images",
-      `${data.id}`,
-    );
-
-    if (!success) throw new Error(message);
+    // if (!success) throw new Error(message);
 
     addImages(data.id);
   }
@@ -159,7 +159,7 @@ export async function createEditAnnouncement(formData: FormData) {
     //Generating paths for images
     const mainImagePath: string = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/announcements-images/${id}/main/${mainImageName}`;
     const imagesPaths = images?.map((image) => {
-      const imageName = `${Math.random()}-${image.name}`.replaceAll("/", "");
+      const imageName = `${image.name}`.replaceAll("/", "");
       imagesNames.push(imageName);
       return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/announcements-images/${id}/${imageName}`;
     });
@@ -185,7 +185,7 @@ export async function createEditAnnouncement(formData: FormData) {
     if (mainImageError) {
       console.log(mainImageError);
     }
-
+    
     //Adding additional images to storage
     imagesNames.forEach(async (name, i) => {
       const { error: imagesError } = await supabase.storage

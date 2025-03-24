@@ -6,7 +6,7 @@ function Logo({ className }: { className?: string }) {
   return (
     <Link className={`relative block h-fit ${className}`} href="/">
       <Image
-        className="min-h-[100px] min-w-[100px] rounded-full shadow-2xl"
+        className="min-h-[100px] min-w-[100px] rounded-full shadow-lg"
         src={logo}
         alt="logo"
         height={100}

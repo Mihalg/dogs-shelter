@@ -25,7 +25,7 @@ function PostsRow({
 
   return (
     <div
-      className={`grid h-[60px] gap-x-2 grid-cols-[${columnsTemplate}] items-center py-2`}
+      className={`grid h-[60px] gap-x-2 grid-cols-${columnsTemplate} items-center py-2`}
     >
       <div>
         {post.image ? (

@@ -22,7 +22,7 @@ export default function HeroSection() {
             wspieraj, zmieniaj los bezdomnych zwierząt razem z nami!
           </p>
           <Link
-            href="adoptuj"
+            href="adopcja"
             className="font-semibold block w-fit rounded-md bg-primary-100 px-8 py-2 text-light-100 hover:bg-primary-100/90"
           >
             Adoptuj

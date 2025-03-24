@@ -24,7 +24,7 @@ function FacebookPost({ link, type }: { link: string; type: string }) {
 
   return (
     <div
-      className={`${type === "photo" ? "fb-post" : "video"} max-h-[350px] w-fit overflow-auto shadow-md`}
+      className={`${type === "photo" ? "fb-post" : "video"} max-h-[350px] w-fit overflow-auto shadow-md justify-self-center`}
       data-href={link}
       data-width="300"
       data-show-text="true"

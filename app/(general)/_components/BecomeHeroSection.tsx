@@ -34,25 +34,25 @@ export default function BecomeHeroSection() {
             className="flex flex-col items-center justify-center gap-4 justify-self-center transition-transform hover:scale-105"
           >
             <div className="flex h-[240px] w-[240px] items-center justify-center rounded-full bg-light-100 shadow-lg">
-              <Image src={adopt} height={150} width={150} alt="adoptuj" />
+              <Image src={adopt} height={150} width={150} alt="" />
             </div>
             <p className="text-5xl font-semibold">Adoptuj</p>
           </Link>
           <Link
-            href="adoptuj"
+            href="wsparcie"
             className="flex flex-col items-center justify-center gap-4 justify-self-center transition-transform hover:scale-105"
           >
             <div className="flex h-[240px] w-[240px] items-center justify-center rounded-full bg-light-100 shadow-lg">
-              <Image src={support} height={150} width={150} alt="adoptuj" />
+              <Image src={support} height={150} width={150} alt="" />
             </div>
             <p className="text-5xl font-semibold">Wesprzyj</p>
           </Link>
           <Link
-            href="adoptuj"
+            href="wsparcie"
             className="flex flex-col items-center justify-center gap-4 justify-self-center transition-transform hover:scale-105"
           >
             <div className="flex h-[240px] w-[240px] items-center justify-center rounded-full bg-light-100 shadow-lg">
-              <Image src={volunteer} height={150} width={150} alt="adoptuj" />
+              <Image src={volunteer} height={150} width={150} alt="" />
             </div>
             <p className="text-5xl font-semibold">Wolontariat</p>
           </Link>

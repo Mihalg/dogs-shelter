@@ -26,11 +26,11 @@ export default async function AnnouncementsCards({
   const { data: announcements } = range
     ? await supabase
         .from("announcements")
-        .select("id, main_image, name, sex, age, race, created_at")
+        .select("id, main_image, name, sex, age, breed, created_at")
         .range(0, range)
     : await supabase
         .from("announcements")
-        .select("id, main_image, name, sex, age, race, created_at");
+        .select("id, main_image, name, sex, age, breed, created_at");
 
   let announcementsToRender = announcements?.sort(function (a, b) {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
@@ -50,6 +50,7 @@ export default async function AnnouncementsCards({
         if (announcement.name.toLowerCase().includes(name)) return announcement;
       });
     }
+
     if (sex !== "0") {
       switch (sex) {
         case "samica":
@@ -67,26 +68,44 @@ export default async function AnnouncementsCards({
     if (age !== "0") {
       switch (age) {
         case "1":
-          announcementsToRender?.filter(
+          announcementsToRender = announcementsToRender?.filter(
             (announcement) => announcement.age === 1,
           );
           break;
         case "2":
           console.log("2");
-          announcementsToRender?.filter(
+          announcementsToRender = announcementsToRender?.filter(
             (announcement) => announcement.age > 1 && announcement.age < 5,
           );
           break;
         case "3":
-          announcementsToRender?.filter(
+          announcementsToRender = announcementsToRender?.filter(
             (announcement) => announcement.age > 4 && announcement.age < 10,
           );
           break;
         case "4":
-          announcementsToRender?.filter(
+          announcementsToRender = announcementsToRender?.filter(
             (announcement) => announcement.age >= 10,
           );
       }
+    }
+
+    if (toDate) {
+      announcementsToRender = announcementsToRender?.filter(
+        (announcement) =>
+          new Date(toDate).getTime() -
+            new Date(announcement.created_at).getTime() >=
+          0,
+      );
+    }
+
+    if (fromDate) {
+      announcementsToRender = announcementsToRender?.filter(
+        (announcement) =>
+          new Date(fromDate).getTime() -
+            new Date(announcement.created_at).getTime() <=
+          0,
+      );
     }
   }
   return (
@@ -131,7 +150,7 @@ export default async function AnnouncementsCards({
                 </div>
                 <div className="flex items-center gap-2">
                   <Image src={paw} height={18} width={18} alt="rasa" />
-                  <p className="capitalize">{announcement.race}</p>
+                  <p className="capitalize">{announcement.breed}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Image

@@ -6,14 +6,13 @@ async function AnnouncementsList() {
 
   const { data: announcements } = await supabase
     .from("announcements")
-    .select("id, main_image, name, race, gender, age, created_at");
+    .select("id, main_image, name, breed, sex, age, created_at");
 
   return announcements?.length ? (
     announcements?.map((announcement) => (
       <AnnouncementsRow
         key={announcement.id}
         announcement={announcement}
-        columnsTemplate="1fr_1fr_1fr_1fr_1fr_0.4fr"
       />
     ))
   ) : (

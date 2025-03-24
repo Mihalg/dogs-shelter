@@ -6,7 +6,7 @@ export async function getAnnouncementData(id: string | null) {
 
   const { data: announcement, error } = await supabase
     .from("announcements")
-    .select("id, name, age, animal, gender, description, main_image, images")
+    .select("id, name, age, breed, sex, description, main_image, images")
     .eq("id", +id)
     .single();
 

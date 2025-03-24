@@ -16,7 +16,7 @@ type Announcement = {
   id: number;
   name: string;
   age: number;
-  animal: string;
+  breed: string;
   sex: string;
   description: string;
   main_image: string;
@@ -84,7 +84,7 @@ export default function AccountModalContent() {
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className="grid grid-cols-1 gap-x-8 gap-y-4 px-4 py-4 lg:grid-cols-3"
+      className="grid grid-cols-1 gap-x-8 gap-y-4 px-4 py-4 lg:grid-cols-4"
     >
       <input
         className="hidden"
@@ -126,7 +126,17 @@ export default function AccountModalContent() {
           name="age"
         />
       </div>
-      <div className="lg:col-start-1 lg:col-end-4">
+      <div>
+        <Label htmlFor="breed">Typ rasy</Label>
+        <Input
+          defaultValue={announcement?.breed}
+          required
+          id="breed"
+          type="text"
+          name="breed"
+        />
+      </div>
+      <div className="lg:col-start-1 lg:col-end-5">
         <Label htmlFor="description">Opis</Label>
         <Textarea
           defaultValue={announcement?.description}
@@ -134,7 +144,7 @@ export default function AccountModalContent() {
           id="description"
         ></Textarea>
       </div>
-      <div className="lg:col-start-1 lg:col-end-4 grid grid-cols-2">
+      <div className="grid grid-cols-2 lg:col-start-1 lg:col-end-5">
         <div>
           <Label className="mb-4 block w-full text-center">
             Główne zdjęcie
@@ -164,7 +174,7 @@ export default function AccountModalContent() {
       </div>
       <Button
         disabled={isPending}
-        className="ml-auto mt-auto w-40 lg:col-start-1 lg:col-end-4"
+        className="ml-auto mt-auto w-40 lg:col-start-1 lg:col-end-5"
       >
         Zapisz
       </Button>

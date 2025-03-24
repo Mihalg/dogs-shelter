@@ -13,7 +13,7 @@ async function PostsList() {
       <PostsRow
         key={post.id}
         post={post}
-        columnsTemplate="1fr_1fr_1fr_1fr_0.4fr"
+        columnsTemplate="[1fr_1fr_1fr_1fr_0.4fr]"
       />
     ))
   ) : (

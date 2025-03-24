@@ -6,7 +6,7 @@ import { ArrowDown, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export default function Filters() {
+export default function AnnouncementsFilters() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const path = usePathname();

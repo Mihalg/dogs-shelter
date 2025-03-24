@@ -2,6 +2,7 @@
 
 import { login } from "@/app/_lib/actions";
 import { useActionState } from "react";
+import { Button } from "../_components/Button";
 
 function LoginPage() {
   const [state, action, pending] = useActionState(login, undefined);
@@ -23,7 +24,7 @@ function LoginPage() {
           <p className="text-red-800">{state?.errors.email}</p>
         </div>
         <div className="mb-4 mt-2 flex flex-col">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Hasło</label>
           <input
             className="rounded-md px-2 py-1"
             id="password"
@@ -31,13 +32,12 @@ function LoginPage() {
             type="password"
           />
         </div>
-        <button
+        <Button
           disabled={pending}
           type="submit"
-          className="rounded-md bg-primary-100"
         >
           Zaloguj
-        </button>
+        </Button>
       </form>
     </div>
   );

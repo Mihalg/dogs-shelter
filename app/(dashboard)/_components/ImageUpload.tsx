@@ -43,12 +43,9 @@ const ImageUpload = ({
 
     if (fileArray.length > maxFiles) return;
 
-    console.log(maxFiles);
-
     setImages((prev) => [...prev, ...fileArray]);
 
     const urls = fileArray.map((file) => URL.createObjectURL(file));
-    console.log(urls);
     setPreviewUrls((prev) => (multiple ? [...prev, ...urls] : urls));
   };
 

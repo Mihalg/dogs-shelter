@@ -19,19 +19,19 @@ export default function NavBar() {
         <div className="flex w-full min-w-[200px] max-w-[250px] items-center self-center">
           <Logo className="mx-auto" />
         </div>
-        <MainNav.NavRow href="aktualnosci">
+        <MainNav.NavRow href="/aktualnosci">
           <span>Aktualności</span>
         </MainNav.NavRow>
 
-        <MainNav.NavRow href="adopcja">
+        <MainNav.NavRow href="/adopcja">
           <span>Adoptuj</span>
         </MainNav.NavRow>
 
-        <MainNav.NavRow href="o-nas">
+        <MainNav.NavRow href="/o-nas">
           <span>O nas</span>
         </MainNav.NavRow>
-        <MainNav.NavRow href="kontakt">
-          <span>Kontakt</span>
+        <MainNav.NavRow href="/wsparcie">
+          <span>Wesprzyj</span>
         </MainNav.NavRow>
       </MainNav>
     </div>

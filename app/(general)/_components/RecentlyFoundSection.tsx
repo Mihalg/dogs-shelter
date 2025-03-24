@@ -50,7 +50,7 @@ export default function RecentlyFound() {
           </Suspense>
         </div>
         <Link
-          href="/aktualnosci"
+          href="/adopcja"
           className="mx-auto mt-8 block w-fit rounded-full bg-primary-100 px-6 py-2 font-semibold text-white hover:bg-primary-200"
         >
           Zobacz więcej

@@ -2,15 +2,13 @@ import Spinner from "@/app/(dashboard)/_components/Spinner";
 import paw from "@/public/greenPawBig.png";
 import Image from "next/image";
 import { Suspense } from "react";
-import AnnouncementsCards from "../_components/AnnouncementsCards";
-import Filters from "../_components/AnnouncementsFitlers";
-function AdoptPage({
+import PostCards from "../_components/PostCards";
+import PostsFilters from "../_components/PostsFilters";
+
+function News({
   searchParams,
 }: {
   searchParams?: Promise<{
-    imie?: string;
-    plec: string;
-    wiek: string;
     dataDo?: string;
     dataOd?: string;
   }>;
@@ -20,18 +18,17 @@ function AdoptPage({
       <div className="flex flex-col items-center justify-between gap-6">
         <h2 className="flex items-center gap-6 text-4xl font-bold text-primary-100 lg:text-5xl">
           <Image src={paw} alt="łapa" height={55} width={55} />
-          Zwierzęta do adopcji
+          Aktualności
         </h2>
-        <Filters />
+        <PostsFilters />
       </div>
       <Suspense fallback={<Spinner />}>
-        <AnnouncementsCards
-          searchParams={searchParams}
-          className="mx-auto grid grid-cols-1 gap-10 md:grid-cols-3 lg:w-full lg:grid-cols-4 lg:gap-6"
-        />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 items-center">
+          <PostCards searchParams={searchParams} />
+        </div>
       </Suspense>
     </div>
   );
 }
 
-export default AdoptPage;
+export default News;

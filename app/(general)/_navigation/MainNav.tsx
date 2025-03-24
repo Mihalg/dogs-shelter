@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   createContext,
   PropsWithChildren,
@@ -70,7 +71,7 @@ export default function MainNav({
           isActive ? "translate-x-0" : "-translate-x-full"
         } flex transition-transform lg:relative lg:h-[50px] lg:w-full lg:translate-x-0 lg:border-none lg:bg-light-100 lg:p-0`}
       >
-        <ul className="lg:w-full mx-auto flex w-4/5 flex-col justify-center space-y-2 lg:flex-row lg:space-y-0 lg:px-4">
+        <ul className="mx-auto flex w-4/5 flex-col justify-center space-y-2 lg:w-full lg:flex-row lg:space-y-0 lg:px-4">
           {children}
         </ul>
       </nav>
@@ -82,6 +83,9 @@ function NavRow({ children, href, nestedLinks }: NavRowProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isHover, setIsHover] = useState(false);
   const { toggleMenu } = useMainNavContext();
+  const pathname = usePathname();
+
+  console.log(pathname);
 
   function toggle() {
     if (!isHover) setIsOpen((isOpen) => !isOpen);
@@ -116,10 +120,10 @@ function NavRow({ children, href, nestedLinks }: NavRowProps) {
     );
 
   return (
-    <li className="h-[50px] w-full max-w-[250px] min-w-[200px] rounded-md text-center">
+    <li className="h-[50px] w-full min-w-[200px] max-w-[250px] rounded-md text-center">
       <Link
         href={href}
-        className="flex h-full items-center justify-center gap-4 rounded-md px-4 py-2 text-2xl text-dark-200 transition-colors hover:bg-green-600 hover:text-white"
+        className={`flex h-full items-center justify-center gap-4 rounded-md px-4 py-2 text-2xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-white ${pathname.includes(href) ? "bg-primary-100 text-white" : ""}`}
         onClick={toggleMenu}
       >
         {children}

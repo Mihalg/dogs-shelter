@@ -22,7 +22,7 @@ function News() {
         </div>
         <div className="overflow-x-auto">
           <Table
-            columnsTemplate="1fr_1fr_1fr_1fr_0.4fr"
+            columnsTemplate="[1fr_1fr_1fr_1fr_0.4fr]"
             columnsTitles={["", "typ", "tytuł", "Data dodania"]}
           >
             <Suspense fallback={<Spinner />}>

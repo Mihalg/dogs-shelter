@@ -3,18 +3,16 @@ import RowDropdownMenu from "./RowDropdownMenu";
 
 function AnnouncementsRow({
   announcement,
-  columnsTemplate,
 }: {
   announcement: {
     id: number;
-    main_image: string | null;
+    main_image: string;
     name: string;
-    race: string;
-    gender: string;
+    breed: string;
+    sex: string;
     age: number;
     created_at: string;
   };
-  columnsTemplate: string;
 }) {
   const date = new Date(announcement.created_at);
   const day = date.getDate();
@@ -23,7 +21,7 @@ function AnnouncementsRow({
 
   return (
     <div
-      className={`grid h-[60px] gap-x-2 grid-cols-[${columnsTemplate}] items-center py-2`}
+      className={`grid h-[60px] grid-cols-[1fr_1fr_1fr_1fr_1fr_0.4fr] items-center gap-x-2 py-2`}
     >
       <div>
         <Image
@@ -34,7 +32,7 @@ function AnnouncementsRow({
         />
       </div>
       <div>{announcement.name}</div>
-      <div>{announcement.gender}</div>
+      <div>{announcement.sex}</div>
       <div>{announcement.age}</div>
       <div>
         {day < 10 ? `0${day}` : day}-{month < 10 ? `0${month}` : month}-{year}
