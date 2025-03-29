@@ -108,6 +108,11 @@ body {
     transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+.has-active-child:has(li.active) {
+  color: rgb(243 243 243);
+  background-color: rgb(22 163 74);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

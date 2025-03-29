@@ -47,13 +47,13 @@ export type Database = {
       };
       posts: {
         Row: {
-          content: string | null;
+          content: string;
           created_at: string;
           id: number;
-          image: string | null;
-          link: string | null;
-          title: string | null;
-          type: string | null;
+          image: string;
+          link: string;
+          title: string;
+          type: string;
         };
         Insert: {
           content?: string | null;
@@ -62,7 +62,7 @@ export type Database = {
           image?: string | null;
           link?: string | null;
           title?: string | null;
-          type?: string | null;
+          type?: string;
         };
         Update: {
           content?: string | null;
@@ -71,7 +71,70 @@ export type Database = {
           image?: string | null;
           link?: string | null;
           title?: string | null;
-          type?: string | null;
+          type?: string;
+        };
+        Relationships: [];
+      };
+      events: {
+        Row: {
+          content: string;
+          created_at: string;
+          id: number;
+          image: string;
+          title: string;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          image?: string | null;
+          title?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          image?: string | null;
+          title?: string | null;
+        };
+        Relationships: [];
+      };
+      fundraisers: {
+        Row: {
+          created_at: string;
+          id: number;
+          link: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          link: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          link: string;
+        };
+        Relationships: [];
+      };
+      expenses: {
+        Row: {
+          created_at: string;
+          id: number;
+          images: string[];
+          title: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          images?: string[] | null;
+          title: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          images?: string[];
+          title?: string;
         };
         Relationships: [];
       };

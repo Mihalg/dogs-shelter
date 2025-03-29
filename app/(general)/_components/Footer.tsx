@@ -1,16 +1,28 @@
+import logo from "@/public/logo.png";
 import { MailIcon, MapPin, PhoneIcon } from "lucide-react";
-import Logo from "./Logo";
+import Image from "next/image";
+import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="w-full bg-dark-200 px-6 py-6 text-light-200">
+    <footer className="mt-auto w-full bg-dark-200 px-6 py-6 text-light-200">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-[0.4fr_1fr_0.8fr] lg:gap-4">
-        <div className="flex flex-col justify-center gap-2">
-          <Logo className="mx-auto" />
+        <Link
+          href="/"
+          className="flex w-full min-w-[200px] max-w-[250px] flex-col items-center justify-center gap-2 self-center lg:static mx-auto"
+        >
+          <Image
+            className="min-h-[100px] min-w-[100px] rounded-full shadow-lg"
+            src={logo}
+            alt="Logo przytuliska"
+            height={100}
+            width={100}
+          />
           <p className="text-center text-lg font-semibold">
             Przytulisko dla Bezdomnych Zwierząt w Kłodawie
           </p>
-        </div>
+        </Link>
+
         <div className="mx-auto flex flex-col gap-4">
           <p className="text-xl font-semibold">KONTAKT</p>
           <div className="flex gap-2">
@@ -32,7 +44,7 @@ export function Footer() {
 
           <div className="mt-auto flex items-center gap-4 border-b-[1px] border-t-[1px] border-light-200 py-1 text-xl font-semibold">
             <p>Obserwuj nas</p>
-            <div className="flex items-center md:ml-4">
+            <div className="flex items-center transition-all hover:opacity-80 md:ml-4">
               <a
                 className="w-[24px]"
                 href="https://www.facebook.com/profile.php?id=100063527889981"
@@ -47,7 +59,7 @@ export function Footer() {
                 </svg>
               </a>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center transition-all hover:opacity-80">
               <a
                 className="w-[24px]"
                 href="https://www.instagram.com/przytulisko_klodawa_/"
@@ -62,7 +74,7 @@ export function Footer() {
                 </svg>
               </a>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center transition-all hover:opacity-80">
               <a
                 className="w-[24px]"
                 href="https://www.tiktok.com/@przytuliskoklodawa"

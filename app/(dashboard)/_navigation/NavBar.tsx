@@ -1,11 +1,12 @@
 "use client";
 
-import { useOutsideClick } from "@/app/(general)/_hooks/useOutsideClick";
+import { useOutsideClick } from "@/app/_hooks/useOutsideClick";
 import { LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import Hamburger from "./Hamburger";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { logout } from "@/app/_lib/actions";
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -42,10 +43,37 @@ export default function NavBar() {
           >
             Ogłoszenia
           </Link>
+          <Link
+            className={`x-4 gap-4 rounded-md py-2 text-center text-2xl text-dark-200 transition-colors hover:bg-green-600 hover:text-light-100 ${pathname.includes("wydarzenia") ? "bg-primary-100 text-light-100" : ""}`}
+            onClick={toggleMenu}
+            href="wydarzenia"
+          >
+            Wydarzenia
+          </Link>
+          <Link
+            className={`x-4 gap-4 rounded-md py-2 text-center text-2xl text-dark-200 transition-colors hover:bg-green-600 hover:text-light-100 ${pathname.includes("zbiorki") ? "bg-primary-100 text-light-100" : ""}`}
+            onClick={toggleMenu}
+            href="zbiorki"
+          >
+            Zbiórki
+          </Link>
+          <Link
+            className={`x-4 gap-4 rounded-md py-2 text-center text-2xl text-dark-200 transition-colors hover:bg-green-600 hover:text-light-100 ${pathname.includes("wydatki") ? "bg-primary-100 text-light-100" : ""}`}
+            onClick={toggleMenu}
+            href="wydatki"
+          >
+            Wydatki
+          </Link>
         </div>
         <div className="mb-16 flex w-full items-center justify-center gap-8 shadow-none">
-          <Settings size={30} />
-          <LogOut size={30} />
+          <Settings
+            size={30}
+            role="button"
+            onClick={() => {
+              redirect("/admin/panel/ustawienia");
+            }}
+          />
+          <LogOut size={30} role="button" onClick={logout} />
         </div>
       </nav>
     </div>

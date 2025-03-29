@@ -1,10 +1,10 @@
 import Image from "next/image";
-import RowDropdownMenu from "./RowDropdownMenu";
+import RowDropdownMenu from "@/app/(dashboard)/_components/RowDropdownMenu";
 import { Facebook } from "lucide-react";
+import { deletePost } from "@/app/_lib/actions";
 
 function PostsRow({
   post,
-  columnsTemplate,
 }: {
   post: {
     id: number;
@@ -15,8 +15,6 @@ function PostsRow({
     title: string | null;
     created_at: string;
   };
-
-  columnsTemplate: string;
 }) {
   const date = new Date(post.created_at);
   const day = date.getDate();
@@ -25,7 +23,7 @@ function PostsRow({
 
   return (
     <div
-      className={`grid h-[60px] gap-x-2 grid-cols-${columnsTemplate} items-center py-2`}
+      className={`grid min-h-[60px] grid-cols-[1fr_1fr_1fr_1fr_0.4fr] items-center gap-x-2 py-2`}
     >
       <div>
         {post.image ? (
@@ -41,13 +39,17 @@ function PostsRow({
           </div>
         )}
       </div>
-      <div>{post.type === "photo" ? "facebook" : "zwykły"}</div>
+      <div>{post.type === "facebook" ? "facebook" : "zwykły"}</div>
       <div>{post.title}</div>
       <div>
         {day < 10 ? `0${day}` : day}-{month < 10 ? `0${month}` : month}-{year}
       </div>
       <div>
-        <RowDropdownMenu id={post.id} />
+        <RowDropdownMenu
+          id={post.id}
+          paramName="postId"
+          deleteFn={deletePost}
+        />
       </div>
     </div>
   );

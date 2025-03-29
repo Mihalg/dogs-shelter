@@ -1,4 +1,4 @@
-import Spinner from "@/app/(dashboard)/_components/Spinner";
+import Spinner from "@/app/_components/Spinner";
 import paw from "@/public/greenPawBig.png";
 import Image from "next/image";
 import { Suspense } from "react";
@@ -16,13 +16,15 @@ function AdoptPage({
   }>;
 }) {
   return (
-    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-6 py-12 lg:min-h-[600px]">
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-6 py-10 lg:min-h-[550px]">
       <div className="flex flex-col items-center justify-between gap-6">
         <h2 className="flex items-center gap-6 text-4xl font-bold text-primary-100 lg:text-5xl">
-          <Image src={paw} alt="łapa" height={55} width={55} />
+          <Image src={paw} alt="" height={55} width={55} />
           Zwierzęta do adopcji
         </h2>
-        <Filters />
+        <Suspense>
+          <Filters />
+        </Suspense>
       </div>
       <Suspense fallback={<Spinner />}>
         <AnnouncementsCards

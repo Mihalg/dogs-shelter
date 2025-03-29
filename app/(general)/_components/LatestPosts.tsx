@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import PostCards from "./PostCards";
+import LatestPostsSkeleton from "./LatestPostsSkeleton";
 
-async function LatestPosts() {
+function LatestPosts() {
   return (
     <section className="px-6">
       <div className="mx-auto flex w-full max-w-[1200px] flex-col py-10">
@@ -13,25 +14,8 @@ async function LatestPosts() {
           Co nowego?
         </h2>
         <div className="mx-auto grid grid-cols-1 gap-10 lg:w-full lg:grid-cols-3 lg:gap-6">
-          <Suspense
-            fallback={
-              <>
-                <div className="relative h-[350px] w-full overflow-hidden rounded-md shadow-md">
-                  <div className="absolute left-4 top-4 h-[35px] w-[100px] animate-pulse rounded-full bg-dark-100"></div>
-                  <div className="absolute bottom-0 h-[45px] w-full animate-pulse bg-dark-100"></div>
-                </div>
-                <div className="relative h-[350px] w-full overflow-hidden rounded-md shadow-md">
-                  <div className="absolute left-4 top-4 h-[35px] w-[100px] animate-pulse rounded-full bg-dark-100"></div>
-                  <div className="absolute bottom-0 h-[45px] w-full animate-pulse bg-dark-100"></div>
-                </div>
-                <div className="relative h-[350px] w-full overflow-hidden rounded-md shadow-md">
-                  <div className="absolute left-4 top-4 h-[35px] w-[100px] animate-pulse rounded-full bg-dark-100"></div>
-                  <div className="absolute bottom-0 h-[45px] w-full animate-pulse bg-dark-100"></div>
-                </div>
-              </>
-            }
-          >
-            <PostCards range={3}/>
+          <Suspense fallback={<LatestPostsSkeleton />}>
+            <PostCards range={3} />
           </Suspense>
         </div>
         <Link

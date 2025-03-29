@@ -27,7 +27,8 @@ export default async function AnnouncementsCards({
     ? await supabase
         .from("announcements")
         .select("id, main_image, name, sex, age, breed, created_at")
-        .range(0, range)
+        .order("created_at", { ascending: false })
+        .limit(range)
     : await supabase
         .from("announcements")
         .select("id, main_image, name, sex, age, breed, created_at");
@@ -108,7 +109,7 @@ export default async function AnnouncementsCards({
       );
     }
   }
-  return (
+  return announcements?.length ? (
     <>
       <p className={`${range ? "hidden" : "block"} text-lg text-dark-200`}>
         Znaleziono: {announcementsToRender?.length}
@@ -132,7 +133,7 @@ export default async function AnnouncementsCards({
           return (
             <Link
               href={`/adopcja/${announcement.id}`}
-              className="w-fit justify-self-center overflow-hidden rounded-md text-dark-200 shadow-md"
+              className="w-fit justify-self-center overflow-hidden rounded-md text-dark-200 shadow-md transition-all hover:shadow-lg hover:saturate-[120%]"
               key={announcement.id}
             >
               <Image
@@ -141,7 +142,7 @@ export default async function AnnouncementsCards({
                 src={announcement.main_image}
                 alt={`Główne zdjęcie ogłoszenia ${announcement.name}`}
               />
-              <div className="space-y-1 px-4 py-2">
+              <div className="space-y-2 px-4 py-2">
                 <div className="flex items-baseline justify-between">
                   <p className="text-3xl">{announcement.name}</p>
                   <p>
@@ -173,5 +174,9 @@ export default async function AnnouncementsCards({
         })}
       </div>
     </>
+  ) : (
+    <p className="text-center text-2xl font-semibold text-dark-200">
+      Brak ogłoszeń
+    </p>
   );
 }

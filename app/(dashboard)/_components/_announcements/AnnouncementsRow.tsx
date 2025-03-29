@@ -1,5 +1,6 @@
 import Image from "next/image";
-import RowDropdownMenu from "./RowDropdownMenu";
+import RowDropdownMenu from "../RowDropdownMenu";
+import { deleteAnnouncement } from "@/app/_lib/actions";
 
 function AnnouncementsRow({
   announcement,
@@ -38,7 +39,11 @@ function AnnouncementsRow({
         {day < 10 ? `0${day}` : day}-{month < 10 ? `0${month}` : month}-{year}
       </div>
       <div>
-        <RowDropdownMenu id={announcement.id} />
+        <RowDropdownMenu
+          id={announcement.id}
+          paramName="announcementId"
+          deleteFn={deleteAnnouncement}
+        />
       </div>
     </div>
   );

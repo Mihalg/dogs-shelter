@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+import 'react-photo-view/dist/react-photo-view.css';
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
@@ -20,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl">
-      <body className={`${geistSans.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} min-h-screen antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }

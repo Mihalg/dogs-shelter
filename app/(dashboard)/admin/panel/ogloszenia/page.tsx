@@ -1,26 +1,40 @@
-import AnnouncementModalContent from "@/app/(dashboard)/_components/AnnouncementModalContent";
-import AnnouncementsList from "@/app/(dashboard)/_components/AnnouncementsList";
-import { Input } from "@/app/(dashboard)/_components/Input";
+import AnnouncementModalContent from "@/app/(dashboard)/_components/_announcements/AnnouncementModalContent";
+import AnnouncementsList from "@/app/(dashboard)/_components/_announcements/AnnouncementsList";
 import {
   Modal,
   ModalContent,
   ModalTrigger,
 } from "@/app/(dashboard)/_components/Modal";
-import Spinner from "@/app/(dashboard)/_components/Spinner";
 import Table from "@/app/(dashboard)/_components/Table";
+import TableFilters from "@/app/(dashboard)/_components/TableFilters";
+import Spinner from "@/app/_components/Spinner";
 import { Suspense } from "react";
 
-function Announcements() {
+function Announcements({
+  searchParams,
+}: {
+  searchParams?: Promise<{
+    imie?: string;
+    dataDo?: string;
+    dataOd?: string;
+  }>;
+}) {
   return (
     <Modal>
       <ModalContent>
         <AnnouncementModalContent />
       </ModalContent>
       <div>
-        <div className="mb-6 flex items-center gap-6">
-          <p className="text-2xl lg:text-3xl">Zwierzęta do adopcji</p>
-          <ModalTrigger>Dodaj ogłoszenie</ModalTrigger>
-          <Input placeholder="Wyszukaj po imieniu" className="w-[200px]" />
+        <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-center">
+          <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-center">
+            <div className="flex gap-6">
+              <p className="text-2xl lg:basis-auto lg:text-3xl">
+                Zwierzęta do adopcji
+              </p>
+              <ModalTrigger>Dodaj ogłoszenie</ModalTrigger>
+            </div>
+            <TableFilters placeholder="Wyszukaj po imieniu" paramName="imie" />
+          </div>
         </div>
         <div className="overflow-x-auto">
           <Table
@@ -28,7 +42,7 @@ function Announcements() {
             columnsTitles={["", "Imię", "Płeć", "Wiek", "Data dodania"]}
           >
             <Suspense fallback={<Spinner />}>
-              <AnnouncementsList />
+              <AnnouncementsList searchParams={searchParams} />
             </Suspense>
           </Table>
         </div>

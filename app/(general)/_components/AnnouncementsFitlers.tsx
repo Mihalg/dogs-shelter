@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/app/(dashboard)/_components/Button";
-import { Input } from "@/app/(dashboard)/_components/Input";
+import { Button } from "@/app/_components/Button";
+import { Input } from "@/app/_components/Input";
 import { ArrowDown, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";

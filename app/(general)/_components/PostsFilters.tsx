@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/app/(dashboard)/_components/Button";
-import { Input } from "@/app/(dashboard)/_components/Input";
+import { Button } from "@/app/_components/Button";
+import { Input } from "@/app/_components/Input";
 import { ArrowDown, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -34,7 +34,7 @@ export default function PostsFilters() {
         Filtry
       </Button>
       <div
-        className={`flex ${isOpen ? "max-h-[1000px] pt-4" : "max-h-0 py-0"} flex-col gap-4 overflow-hidden px-4 transition-all lg:max-h-[1000px] lg:w-fit lg:ml-auto lg:flex-row lg:py-4`}
+        className={`flex ${isOpen ? "max-h-[1000px] pt-4" : "max-h-0 py-0"} flex-col gap-4 overflow-hidden px-4 transition-all lg:ml-auto lg:max-h-[1000px] lg:w-fit lg:flex-row lg:py-4`}
       >
         <Input
           value={toDate}

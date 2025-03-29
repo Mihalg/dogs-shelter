@@ -2,10 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { FormState, LoginFormSchema } from "../_lib/definitions";
+import {
+  LoginFormSchema,
+  LoginFormState,
+  updatePasswordSchema,
+} from "../_lib/definitions";
 import { serverClient } from "../_utils/supabase/server";
 
-export async function login(state: FormState, formData: FormData) {
+//----------USER MANAGEMENT---------
+
+export async function login(state: LoginFormState, formData: FormData) {
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -13,7 +19,10 @@ export async function login(state: FormState, formData: FormData) {
 
   if (!validatedFields.success) {
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      errors: {
+        email: validatedFields.error.flatten().fieldErrors.email ?? [],
+        password: validatedFields.error.flatten().fieldErrors.password ?? [],
+      },
     };
   }
 
@@ -23,11 +32,47 @@ export async function login(state: FormState, formData: FormData) {
 
   if (error) {
     console.log(error);
-    redirect("/error");
+    return { errors: { authStatus: "Niepoprawne dane logowania" } };
+  } else {
+    return redirect("/admin/panel");
+  }
+}
+
+export async function changePassword(
+  state: {
+    messages: {
+      password?: string[];
+      confirmPassword?: string[];
+      status?: string;
+    };
+  } | null,
+  formData: FormData,
+) {
+  const validatedFields = updatePasswordSchema.safeParse({
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      messages: {
+        password: validatedFields.error.flatten().fieldErrors.password ?? [],
+        confirmPassword: validatedFields.error.flatten().formErrors ?? [],
+      },
+    };
   }
 
-  revalidatePath("/", "layout");
-  redirect("/admin/panel");
+  const supabase = await serverClient();
+  const { error } = await supabase.auth.updateUser({
+    password: validatedFields.data.password,
+  });
+
+  if (error) {
+    console.log(error);
+    return { messages: { status: "Wystąpił błąd." } };
+  } else {
+    return { messages: { status: "Zmieniono hasło." } };
+  }
 }
 
 export async function logout() {
@@ -39,38 +84,7 @@ export async function logout() {
   redirect("/admin");
 }
 
-export async function deleteFolder(bucketName: string, folderPath: string) {
-  const supabase = await serverClient();
-  // Download all files in folder
-  const { data, error } = await supabase.storage
-    .from(bucketName)
-    .list(folderPath);
-
-  if (error) {
-    console.error("Błąd pobierania plików:", error);
-    return { success: false, message: "Nie udało się pobrać plików" };
-  }
-
-  if (!data || data.length === 0) {
-    return { success: true, message: "Folder jest pusty lub nie istnieje" };
-  }
-
-  // List of path to delete
-  const filesToDelete = data.map((file) => `${folderPath}/${file.name}`);
-
-  // Delete files
-  const { error: deleteError } = await supabase.storage
-    .from(bucketName)
-    .remove(filesToDelete);
-
-  if (deleteError) {
-    console.error("Błąd usuwania plików:", deleteError);
-    return { success: false, message: "Nie udało się usunąć plików" };
-  }
-
-  return { success: true, message: `Folder "${folderPath}" został usunięty` };
-}
-
+//----------ANNOUNCEMENTS---------
 export async function createEditAnnouncement(formData: FormData) {
   const id = formData.get("id") as string | null;
   const main_image = formData.get("main_image") as File | null;
@@ -118,36 +132,35 @@ export async function createEditAnnouncement(formData: FormData) {
   } else {
     //If id user is editing existing announcement
     const { data, error } = await supabase
-    .from("announcements")
-    .update({
-      name,
-      age,
-      breed,
-      description,
-      sex,
-    })
-    .eq("id", +id)
-    .select()
-    .single();
-    
+      .from("announcements")
+      .update({
+        name,
+        age,
+        breed,
+        description,
+        sex,
+      })
+      .eq("id", +id)
+      .select()
+      .single();
+
     if (error) {
       console.log(error);
       throw new Error("Wystąpił nieoczekiwany błąd...");
     }
-    
+
     //Deleting old images and replacing them with new from formData
     const { success: mainFolderSucces, message: mainFolderMessage } =
-    await deleteFolder("announcements-images", `${data.id}/main`);
-    
-    if (!mainFolderSucces) throw new Error(mainFolderMessage);
-    
-    await supabase.storage.from("announcements-images").remove([`${id}`]);
-    // const { success, message } = await deleteFolder(
-    //   "announcements-images",
-    //   `${data.id}`,
-    // );
+      await deleteFolder("announcements-images", `${data.id}/main`);
 
-    // if (!success) throw new Error(message);
+    if (!mainFolderSucces) throw new Error(mainFolderMessage);
+
+    const {
+      success: additionalImagesSucces,
+      message: additionalImagesMessage,
+    } = await deleteFolder("announcements-images", `${data.id}`);
+
+    if (!additionalImagesSucces) throw new Error(additionalImagesMessage);
 
     addImages(data.id);
   }
@@ -183,16 +196,16 @@ export async function createEditAnnouncement(formData: FormData) {
       .from("announcements-images")
       .upload(`/${id}/main/${mainImageName}`, main_image!);
     if (mainImageError) {
-      console.log(mainImageError);
+      console.log("Add main image error:", mainImageError);
     }
-    
+
     //Adding additional images to storage
     imagesNames.forEach(async (name, i) => {
       const { error: imagesError } = await supabase.storage
         .from("announcements-images")
         .upload(`/${id}/${name}`, images![i]);
       if (imagesError) {
-        console.log(imagesError);
+        console.log("Add aditional images error:", imagesError);
       }
     });
   }
@@ -224,4 +237,374 @@ export async function deleteAnnouncement(id: number) {
   if (!success) throw new Error(message);
 
   revalidatePath("/admin/panel/ogloszenia");
+}
+
+//----------POSTS---------
+
+export async function createEditPost(formData: FormData) {
+  const id = formData.get("id") as string | null;
+  const type = formData.get("type") as string | null;
+  const link = formData.get("link") as string | null;
+  const image = formData.get("image") as File | null;
+  const content = formData.get("content") as string | null;
+  const title = formData.get("title") as string | null;
+
+  if (!type) throw new Error("Wystąpił nieoczekiwany błąd");
+
+  const supabase = await serverClient();
+  if (!id) {
+    //if !id user is adding new post
+    const { data, error } = await supabase
+      .from("posts")
+      .insert({ type, link, content, title, image: null })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error("Wystąpił nieoczekiwany błąd...");
+    }
+
+    addImage(data?.id);
+  } else {
+    //If id user is editing existing announcement
+
+    const { data, error } = await supabase
+      .from("posts")
+      .update({ type, link, content, title })
+      .eq("id", +id)
+      .select()
+      .single();
+
+    if (error) {
+      console.log(error);
+      throw new Error("Wystąpił nieoczekiwany błąd...");
+    }
+
+    //Deleting old images and replacing them with new from formData
+    const { success, message } = await deleteFolder(
+      "posts-images",
+      `${data.id}`,
+    );
+
+    if (!success) throw new Error(message);
+
+    addImage(data.id);
+  }
+
+  async function addImage(id: number) {
+    const imageName = image?.name.replaceAll("/", "");
+    const imagePath: string = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts-images/${id}/${imageName}`;
+
+    const { error: imageError } = await supabase
+      .from("posts")
+      .update({
+        image: imagePath,
+      })
+      .eq("id", id);
+
+    if (imageError) {
+      console.log(imageError);
+      throw new Error("Nie udało się dodać ogłoszenia");
+    }
+
+    //Adding main image to storage
+    const { error: storageError } = await supabase.storage
+      .from("posts")
+      .upload(`/${id}/${imageName}`, image!);
+    if (storageError) {
+      console.log("Add image error:", storageError);
+    }
+  }
+
+  revalidatePath("/admin/panel/aktualnosci");
+}
+
+export async function deletePost(id: number) {
+  const supabase = await serverClient();
+
+  //Delete row from database
+  const { error } = await supabase.from("posts").delete().eq("id", id);
+
+  if (error) throw new Error("Wystąpił nieoczekiwany błąd");
+
+  //Delete image from storage
+  const { success, message } = await deleteFolder("posts-images", `${id}`);
+
+  if (!success) throw new Error(message);
+
+  revalidatePath("/admin/panel/aktualnosci");
+}
+
+//----------EVENTS---------
+export async function createEditEvent(formData: FormData) {
+  const id = formData.get("id") as string | null;
+  const image = formData.get("image") as File | null;
+  const content = formData.get("content") as string | null;
+  const title = formData.get("title") as string | null;
+
+  if (!image || !content || !title)
+    throw new Error("Podano błędne dane formularza");
+
+  const supabase = await serverClient();
+  if (!id) {
+    //if !id user is adding new event
+    const { data, error } = await supabase
+      .from("events")
+      .insert({ content, title, image: null })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error("Wystąpił nieoczekiwany błąd...");
+    }
+
+    addImage(data?.id);
+  } else {
+    //If id user is editing existing announcement
+
+    const { data, error } = await supabase
+      .from("posts")
+      .update({ content, title })
+      .eq("id", +id)
+      .select()
+      .single();
+
+    if (error) {
+      console.log(error);
+      throw new Error("Wystąpił nieoczekiwany błąd...");
+    }
+
+    //Deleting old images and replacing them with new from formData
+    const { success, message } = await deleteFolder(
+      "events-images",
+      `${data.id}`,
+    );
+
+    if (!success) throw new Error(message);
+
+    addImage(data.id);
+  }
+
+  async function addImage(id: number) {
+    const imageName = image?.name.replaceAll("/", "");
+    const imagePath: string = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/events-images/${id}/${imageName}`;
+
+    const { error: imageError } = await supabase
+      .from("posts")
+      .update({
+        image: imagePath,
+      })
+      .eq("id", id);
+
+    if (imageError) {
+      console.log(imageError);
+      throw new Error("Nie udało się dodać wydarzenia");
+    }
+
+    //Adding main image to storage
+    const { error: storageError } = await supabase.storage
+      .from("events-images")
+      .upload(`/${id}/${imageName}`, image!);
+    if (storageError) {
+      console.log("Add image error:", storageError);
+    }
+  }
+
+  revalidatePath("/admin/panel/wydarzenia");
+}
+
+export async function deleteEvent(id: number) {
+  const supabase = await serverClient();
+
+  //Delete row from database
+  const { error } = await supabase.from("events").delete().eq("id", id);
+
+  if (error) throw new Error("Wystąpił nieoczekiwany błąd");
+
+  //Delete image from storage
+  const { success, message } = await deleteFolder("events", `${id}`);
+
+  if (!success) throw new Error(message);
+
+  revalidatePath("/admin/panel/wydarzenia");
+}
+
+//----------FUNDRAISERS---------
+export async function createEditFundraiser(
+  formState: { message: string } | null,
+  formData: FormData,
+) {
+  const id = formData.get("id") as string | null;
+  const link = formData.get("link") as string | null;
+
+  if (!link) {
+    return {
+      message: "Wypełnij formularz",
+    };
+  }
+
+  const supabase = await serverClient();
+
+  if (!id) {
+    //if !id user is adding new fundraiser
+    const { error } = await supabase.from("fundraisers").insert({ link });
+    if (error) {
+      console.log(error);
+      return { message: "Wystąpił błąd" };
+    } else {
+      redirect("/admin/panel/zbiorki");
+    }
+  } else {
+    const { error } = await supabase
+      .from("fundraisers")
+      .update({ link })
+      .eq("id", +id);
+    if (error) {
+      console.log(error);
+      return { message: "Wystąpił błąd" };
+    } else {
+      redirect("/admin/panel/zbiorki");
+    }
+  }
+}
+
+export async function deleteFundraiser(id: number) {
+  const supabase = await serverClient();
+
+  //Delete row from database
+  const { error } = await supabase.from("fundraisers").delete().eq("id", id);
+
+  if (error) throw new Error("Wystąpił nieoczekiwany błąd");
+
+  revalidatePath("/admin/panel/zbiorki");
+}
+
+//----------EXPENSES---------
+export async function createEditExpense(formData: FormData) {
+  const id = formData.get("id") as string | null;
+  const images = formData.getAll("images") as File[] | null;
+  const title = formData.get("title") as string | null;
+
+  if (!images || !title) throw new Error("Podano błędne dane formularza");
+
+  const supabase = await serverClient();
+  if (!id) {
+    //if !id user is adding new event
+    const { data, error } = await supabase
+      .from("expenses")
+      .insert({ title, images: null })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error("Wystąpił nieoczekiwany błąd...");
+    }
+
+    addImage(data?.id);
+  } else {
+    //If id user is editing existing expense
+    const { data, error } = await supabase
+      .from("expenses")
+      .update({ title })
+      .eq("id", +id)
+      .select()
+      .single();
+
+    if (error) {
+      console.log(error);
+      throw new Error("Wystąpił nieoczekiwany błąd...");
+    }
+
+    // Deleting old images and replacing them with new from formData
+    const { success, message } = await deleteFolder(
+      "expenses-images",
+      `${data.id}`,
+    );
+
+    if (!success) throw new Error(message);
+
+    addImage(data.id);
+  }
+
+  async function addImage(id: number) {
+    const imagesNames: string[] = [];
+    const imagesPaths = images?.map((image) => {
+      const imageName = `${image.name}`.replaceAll("/", "");
+      imagesNames.push(imageName);
+      return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/expenses-images/${id}/${imageName}`;
+    });
+
+    //Updating row with images paths in storage
+    const { error: imageError } = await supabase
+      .from("expenses")
+      .update({
+        images: imagesPaths,
+      })
+      .eq("id", id);
+
+    if (imageError) {
+      console.log(imageError);
+      throw new Error("Nie udało się dodać wydarzenia");
+    }
+
+    //Adding images to storage
+    imagesNames.forEach(async (name, i) => {
+      const { error: imagesError } = await supabase.storage
+        .from("expenses-images")
+        .upload(`/${id}/${name}`, images![i]);
+      if (imagesError) {
+        console.log("Add images error:", imagesError);
+      }
+    });
+  }
+
+  revalidatePath("/admin/panel/wydatki");
+}
+
+export async function deleteExpense(id: number) {
+  const supabase = await serverClient();
+
+  //Delete row from database
+  const { error } = await supabase.from("expenses").delete().eq("id", id);
+
+  if (error) throw new Error("Wystąpił nieoczekiwany błąd");
+
+  //Delete image from storage
+  const { success, message } = await deleteFolder("expenses-images", `${id}`);
+
+  if (!success) throw new Error(message);
+
+  revalidatePath("/admin/panel/wydatki");
+}
+
+export async function deleteFolder(bucketName: string, folderPath: string) {
+  const supabase = await serverClient();
+  // Download all files in folder
+  const { data, error } = await supabase.storage
+    .from(bucketName)
+    .list(folderPath);
+
+  if (error) {
+    console.error("Błąd pobierania plików:", error);
+    return { success: false, message: "Nie udało się pobrać plików" };
+  }
+
+  if (!data || data.length === 0) {
+    return { success: true, message: "Folder jest pusty lub nie istnieje" };
+  }
+
+  // List of path to delete
+  const filesToDelete = data.map((file) => `${folderPath}/${file.name}`);
+
+  // Delete files
+  const { error: deleteError } = await supabase.storage
+    .from(bucketName)
+    .remove(filesToDelete);
+
+  if (deleteError) {
+    console.error("Błąd usuwania plików:", deleteError);
+    return { success: false, message: "Nie udało się usunąć plików" };
+  }
+
+  return { success: true, message: `Folder "${folderPath}" został usunięty` };
 }

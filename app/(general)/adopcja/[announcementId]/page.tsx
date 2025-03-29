@@ -6,6 +6,7 @@ import paw from "@/public/greenPaw.png";
 import bigPaw from "@/public/greenPawBig.png";
 import male from "@/public/male.png";
 import Image from "next/image";
+import AnnouncementImagesView from "../../_components/AnnouncementImagesView";
 
 export default async function AnnouncementPage({
   params,
@@ -38,40 +39,23 @@ export default async function AnnouncementPage({
     }
 
     return (
-      <div className="mx-auto max-w-[1200px] px-4 py-2 lg:py-10">
+      <div className="mx-auto max-w-[1200px] px-4 py-2 text-dark-400 lg:py-10">
         <div className="grid w-full grid-cols-1 lg:grid-cols-[3fr_1fr]">
-          <div className="relative h-[500px] w-full">
-            <Image
-              src={announcement.main_image}
-              fill
-              className="object-cover"
-              alt={`Główne zdjęcia ogłoszenia ${announcement?.name}`}
-            />
-          </div>
-          <div className="grid grid-cols-4 content-start lg:grid-cols-1">
-            {announcement.images?.map((image, i) => {
-              return (
-                <div key={i} className="relative h-[125px] w-full">
-                  <Image
-                    src={image}
-                    fill
-                    className="object-cover object-center"
-                    alt={`Dodatkowe zdjęcie ogłoszenia ${announcement?.name}`}
-                  />
-                </div>
-              );
-            })}
-          </div>
+          <AnnouncementImagesView
+            mainImage={announcement.main_image}
+            images={announcement.images}
+            name={announcement.name}
+          />
         </div>
-        <div className="mt-6 flex flex-wrap items-center gap-4 md:gap-10">
-          <h2 className="flex items-center gap-4 text-4xl font-semibold text-primary-100">
+        <div className="mt-6 flex flex-wrap items-baseline gap-4 md:gap-10">
+          <h2 className="flex items-center gap-4 text-4xl font-semibold text-primary-100 lg:text-5xl">
             <Image src={bigPaw} height={32} width={32} alt="" />{" "}
             {announcement.name}
           </h2>
-          <p className="pt-1">
+          <p className="lg:text-lg">
             {day} {month} {year}
           </p>
-          <div className="mt-1 flex basis-[320px] items-center justify-center gap-4 rounded-full bg-light-200 px-4 py-1">
+          <div className="mt-1 flex basis-[380px] items-center justify-center gap-4 rounded-full bg-light-100 px-4 py-1 lg:text-lg">
             <div className="flex items-center gap-2">
               <Image src={paw} height={18} width={18} alt="rasa" />
               <p className="capitalize">{announcement.breed}</p>
@@ -93,7 +77,7 @@ export default async function AnnouncementPage({
             </div>
           </div>
         </div>
-        <div className="mt-6">
+        <div className="py-4">
           <p>{announcement.description}</p>
         </div>
       </div>

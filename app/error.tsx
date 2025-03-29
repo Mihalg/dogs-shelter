@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "./(dashboard)/_components/Button";
+import { Button } from "./_components/Button";
 
 export default function ErrorPage({
   error,

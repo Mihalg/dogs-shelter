@@ -19,7 +19,8 @@ async function PostCards({
     ? await supabase
         .from("posts")
         .select("id, created_at, link, type, image, content, title")
-        .range(0, range)
+        .order("created_at", { ascending: false })
+        .limit(range)
     : await supabase
         .from("posts")
         .select("id, created_at, link, type, image, content, title");
@@ -34,18 +35,14 @@ async function PostCards({
   if (toDate) {
     postsToRender = postsToRender?.filter(
       (post) =>
-        new Date(toDate).getTime() -
-          new Date(post.created_at).getTime() >=
-        0,
+        new Date(toDate).getTime() - new Date(post.created_at).getTime() >= 0,
     );
   }
 
   if (fromDate) {
     postsToRender = postsToRender?.filter(
       (post) =>
-        new Date(fromDate).getTime() -
-          new Date(post.created_at).getTime() <=
-        0,
+        new Date(fromDate).getTime() - new Date(post.created_at).getTime() <= 0,
     );
   }
 
@@ -55,10 +52,10 @@ async function PostCards({
     const month = getMonthName(date.getMonth() + 1);
 
     return post.type && post.type !== "custom" && post.link ? (
-      <FacebookPost link={post.link} type={post.type} />
+      <FacebookPost link={post.link} />
     ) : (
       <Link
-        href="asd"
+        href={`/aktualnosci/${post.id}`}
         className="relative h-[350px] w-full justify-self-center overflow-hidden rounded-md text-white shadow-md transition-all hover:shadow-lg hover:saturate-[120%]"
         key={post.id}
       >

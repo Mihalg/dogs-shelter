@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect } from "react";
 
-function FacebookPost({ link, type }: { link: string; type: string }) {
+function FacebookPost({ link }: { link: string }) {
   useEffect(() => {
-    if (window.FB) {
-      window.FB.XFBML.parse();
+    if ((window as any).FB) {
+      (window as any).FB.XFBML.parse();
     } else {
       const script = document.createElement("script");
       script.async = true;
@@ -14,8 +15,8 @@ function FacebookPost({ link, type }: { link: string; type: string }) {
       script.src =
         "https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v22.0";
       script.onload = async () => {
-        if (window.FB) {
-          await window.FB.XFBML.parse();
+        if ((window as any).FB) {
+          await (window as any).FB.XFBML.parse();
         }
       };
       document.body.appendChild(script);
@@ -24,7 +25,7 @@ function FacebookPost({ link, type }: { link: string; type: string }) {
 
   return (
     <div
-      className={`${type === "photo" ? "fb-post" : "video"} max-h-[350px] w-fit overflow-auto shadow-md justify-self-center`}
+      className="fb-post max-h-[350px] w-fit justify-self-center overflow-auto shadow-md"
       data-href={link}
       data-width="300"
       data-show-text="true"

@@ -19,7 +19,7 @@ export default function GeneralLayout({
           <p>PrzytuliskoKlodawa@interia.pl</p>
         </div>
 
-        <div className="flex items-center md:ml-4">
+        <div className="flex items-center transition-all hover:opacity-90 md:ml-4">
           <a
             className="w-[24px]"
             href="https://www.facebook.com/profile.php?id=100063527889981"
@@ -34,7 +34,7 @@ export default function GeneralLayout({
             </svg>
           </a>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center transition-all hover:opacity-90">
           <a
             className="w-[24px]"
             href="https://www.instagram.com/przytulisko_klodawa_/"
@@ -49,7 +49,7 @@ export default function GeneralLayout({
             </svg>
           </a>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center transition-all hover:opacity-90">
           <a
             className="w-[24px]"
             href="https://www.tiktok.com/@przytuliskoklodawa"

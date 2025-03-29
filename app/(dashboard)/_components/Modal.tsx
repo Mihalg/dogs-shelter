@@ -10,7 +10,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Button } from "./Button";
+import { Button } from "../../_components/Button";
 
 type ModalContextTypes = {
   isOpen: boolean;

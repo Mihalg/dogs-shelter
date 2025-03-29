@@ -10,7 +10,7 @@ import {
   useContext,
   useState,
 } from "react";
-import { useOutsideClick } from "../_hooks/useOutsideClick";
+import { useOutsideClick } from "../../_hooks/useOutsideClick";
 
 type MainNavContext = {
   toggleMenu: () => void;
@@ -71,7 +71,7 @@ export default function MainNav({
           isActive ? "translate-x-0" : "-translate-x-full"
         } flex transition-transform lg:relative lg:h-[50px] lg:w-full lg:translate-x-0 lg:border-none lg:bg-light-100 lg:p-0`}
       >
-        <ul className="mx-auto flex w-4/5 flex-col justify-center space-y-2 lg:w-full lg:flex-row lg:space-y-0 lg:px-4">
+        <ul className="mx-auto flex w-4/5 flex-col items-center justify-center space-y-2 lg:w-full lg:flex-row lg:space-y-0 lg:px-4">
           {children}
         </ul>
       </nav>
@@ -81,14 +81,12 @@ export default function MainNav({
 
 function NavRow({ children, href, nestedLinks }: NavRowProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHover, setIsHover] = useState(false);
+
   const { toggleMenu } = useMainNavContext();
   const pathname = usePathname();
 
-  console.log(pathname);
-
   function toggle() {
-    if (!isHover) setIsOpen((isOpen) => !isOpen);
+    setIsOpen(true);
   }
 
   if (!href)
@@ -97,21 +95,19 @@ function NavRow({ children, href, nestedLinks }: NavRowProps) {
         onClick={toggle}
         onMouseEnter={() => {
           setIsOpen(true);
-          setIsHover(true);
         }}
         onMouseLeave={() => {
           setIsOpen(false);
-          setIsHover(false);
         }}
-        className="h-[50px] w-full max-w-[250px] cursor-default rounded-md text-2xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-light-100"
+        className={`has-active-child h-[50px] w-full min-w-[150px] max-w-[200px] cursor-default rounded-md text-xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-light-100`}
       >
-        <span className="flex flex-col items-center py-2">
-          <div className="flex w-full items-center justify-center gap-4 px-4">
+        <span className="flex flex-col items-center">
+          <div className="flex h-full w-full items-center justify-center gap-4 px-4 py-3">
             {children}
           </div>
 
           <ul
-            className={`w-full divide-y-2 divide-light-200 overflow-hidden px-4 lg:divide-y-0 lg:px-0 lg:pl-4 ${isOpen ? "mt-2 max-h-96 lg:mt-[10px]" : "max-h-0"} transition-all`}
+            className={`-mt-[2px] w-full overflow-hidden pl-4 lg:px-0 lg:pl-4 ${isOpen ? "max-h-96" : "max-h-0"} transition-all`}
           >
             {nestedLinks}
           </ul>
@@ -120,10 +116,10 @@ function NavRow({ children, href, nestedLinks }: NavRowProps) {
     );
 
   return (
-    <li className="h-[50px] w-full min-w-[200px] max-w-[250px] rounded-md text-center">
+    <li className="h-[50px] w-full min-w-[150px] max-w-[200px] rounded-md text-center">
       <Link
         href={href}
-        className={`flex h-full items-center justify-center gap-4 rounded-md px-4 py-2 text-2xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-white ${pathname.includes(href) ? "bg-primary-100 text-white" : ""}`}
+        className={`flex h-full items-center justify-center gap-4 rounded-md px-4 py-2 text-xl text-dark-200 transition-colors hover:bg-primary-100 hover:text-white ${pathname.includes(href) ? "bg-primary-100 text-white" : ""}`}
         onClick={toggleMenu}
       >
         {children}
@@ -134,19 +130,17 @@ function NavRow({ children, href, nestedLinks }: NavRowProps) {
 
 function NavRowNested({ children, href }: NavRowNested) {
   const { toggleMenu } = useMainNavContext();
+  const pathname = usePathname();
 
   return (
     <li
-      className="overflow-hidden first-of-type:rounded-t-md last-of-type:rounded-b-md lg:first-of-type:rounded-none lg:last-of-type:rounded-none"
+      className={`ml-auto overflow-hidden rounded-r-md border-l-[2px] border-l-dark-100 bg-light-100 text-dark-200 transition-colors hover:border-l-primary-100 hover:bg-light-200 lg:ml-0 lg:text-xl ${pathname.includes(href) ? "active border-l-primary-100 bg-light-200 text-primary-100" : ""}`}
       onClick={(e) => {
         e.stopPropagation();
         toggleMenu();
       }}
     >
-      <Link
-        className="ml-auto block w-full border-dark-100 bg-light-100 px-2 py-2 text-base text-dark-200 transition-colors hover:border-primary-100 hover:bg-light-200 lg:ml-0 lg:rounded-none lg:rounded-r-md lg:border-l-[2px] lg:text-xl"
-        href={href}
-      >
+      <Link className="block w-full px-2 py-2" href={href}>
         {children}
       </Link>
     </li>

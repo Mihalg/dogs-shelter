@@ -1,13 +1,20 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "../../_components/Button";
 import { ModalTrigger } from "./Modal";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
-import { usePathname, useRouter } from "next/navigation";
-import { deleteAnnouncement } from "@/app/_lib/actions";
-import { Button } from "./Button";
 
-function RowDropdownMenu({ id }: { id: number }) {
+function RowDropdownMenu({
+  id,
+  paramName,
+  deleteFn,
+}: {
+  id: number;
+  paramName: string;
+  deleteFn: (id: number) => Promise<void>;
+}) {
   const [open, setIsOpen] = useState(false);
   const pathName = usePathname();
   const router = useRouter();
@@ -27,7 +34,7 @@ function RowDropdownMenu({ id }: { id: number }) {
           <ModalTrigger
             loading={true}
             onClick={() => {
-              router.replace(`${pathName}?id=${id}`);
+              router.replace(`${pathName}?${paramName}=${id}`);
               setIsOpen(false);
             }}
             className="w-full bg-transparent text-dark-200 shadow-none transition-colors hover:bg-primary-100 hover:text-white"
@@ -37,7 +44,7 @@ function RowDropdownMenu({ id }: { id: number }) {
           <Button
             onClick={() => {
               setIsOpen(false);
-              deleteAnnouncement(id);
+              deleteFn(id);
             }}
             className="w-full bg-transparent text-dark-200 shadow-none transition-colors hover:bg-primary-100 hover:text-white"
           >
