@@ -18,24 +18,26 @@ export default function NavBar() {
     <div className="relative z-10 flex items-center justify-between px-3 py-0 lg:block lg:h-fit lg:px-0">
       <Hamburger onClick={toggleMenu} isActive={isActive} />
       <MainNav isActive={isActive} toggleMenu={toggleMenu}>
-        <Link
-          onClick={() => {
-            setIsActive(false);
-          }}
-          href="/"
-          className="absolute top-6 flex w-full min-w-[200px] max-w-[250px] flex-col items-center gap-2 self-center lg:static"
-        >
-          <Image
-            className="min-h-[100px] min-w-[100px] rounded-full shadow-lg"
-            src={logo}
-            alt="Logo przytuliska"
-            height={100}
-            width={100}
-          />
-          <p className="text-center text-lg font-semibold text-dark-200 lg:hidden">
-            Przytulisko dla Bezdomnych Zwierząt w Kłodawie
-          </p>
-        </Link>
+        <li className="absolute top-6 w-full min-w-[200px] max-w-[250px] self-center lg:static">
+          <Link
+            className="flex flex-col items-center gap-2"
+            onClick={() => {
+              setIsActive(false);
+            }}
+            href="/"
+          >
+            <Image
+              className="min-h-[100px] min-w-[100px] rounded-full shadow-lg"
+              src={logo}
+              alt="Logo przytuliska"
+              height={100}
+              width={100}
+            />
+            <p className="text-center text-lg font-semibold text-dark-200 lg:hidden">
+              Przytulisko dla Bezdomnych Zwierząt w Kłodawie
+            </p>
+          </Link>
+        </li>
         <MainNav.NavRow href="/aktualnosci">
           <span>Aktualności</span>
         </MainNav.NavRow>

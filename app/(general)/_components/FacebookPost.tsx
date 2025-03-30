@@ -25,7 +25,7 @@ function FacebookPost({ link }: { link: string }) {
 
   return (
     <div
-      className="fb-post max-h-[350px] w-fit justify-self-center overflow-auto shadow-md"
+      className="fb-post h-[350px] w-[350px] justify-self-center overflow-auto shadow-md"
       data-href={link}
       data-width="300"
       data-show-text="true"

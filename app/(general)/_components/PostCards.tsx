@@ -14,6 +14,8 @@ async function PostCards({
     dataOd?: string;
   }>;
 }) {
+
+
   const supabase = browserClient();
   const { data: posts } = range
     ? await supabase
@@ -56,7 +58,7 @@ async function PostCards({
     ) : (
       <Link
         href={`/aktualnosci/${post.id}`}
-        className="relative h-[350px] w-full justify-self-center overflow-hidden rounded-md text-white shadow-md transition-all hover:shadow-lg hover:saturate-[120%]"
+        className="relative h-[350px] w-full max-w-[400px] justify-self-center overflow-hidden rounded-md text-white shadow-md transition-all hover:shadow-lg hover:saturate-[120%]"
         key={post.id}
       >
         <Image

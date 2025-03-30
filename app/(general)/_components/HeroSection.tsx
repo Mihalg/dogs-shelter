@@ -7,8 +7,9 @@ export default function HeroSection() {
     <header className="relative w-full overflow-hidden py-12 px-6">
       <Image
         src={heroImage}
+        quality={75}
         fill
-        placeholder="blur"
+        loading="eager"
         alt="Pies w lesie jako tło nagłówka"
         className="absolute -z-10 object-cover object-[40%_45%]"
       />

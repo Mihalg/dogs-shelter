@@ -1,10 +1,11 @@
-#Przytulisko dla Bezdomnych Psów w Kłodzku - Website
 
-##🐾 Project Description
+# Przytulisko dla Bezdomnych Psów w Kłodzku - Website
+
+## 🐾 Project Description
 
 A website for an animal shelter that allows users to browse adoptable pets, view the latest news, and support the shelter through volunteering and donations. The site includes  CMS for content management.
 
-##🚀 Technologies
+## 🚀 Technologies
 
 This project was built using:
 
@@ -24,7 +25,7 @@ React Photo View
 
 Hamburgers – jonsuh.com/hamburgers
 
-##🎯 Features
+## 🎯 Features
 
 ✅ Adoptable Animals List – Dynamic pages for each pet listing.
 

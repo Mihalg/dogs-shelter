@@ -9,7 +9,7 @@ export function Footer() {
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-[0.4fr_1fr_0.8fr] lg:gap-4">
         <Link
           href="/"
-          className="flex w-full min-w-[200px] max-w-[250px] flex-col items-center justify-center gap-2 self-center lg:static mx-auto"
+          className="mx-auto flex w-full min-w-[200px] max-w-[250px] flex-col items-center justify-center gap-2 self-center lg:static"
         >
           <Image
             className="min-h-[100px] min-w-[100px] rounded-full shadow-lg"
@@ -46,6 +46,7 @@ export function Footer() {
             <p>Obserwuj nas</p>
             <div className="flex items-center transition-all hover:opacity-80 md:ml-4">
               <a
+                title="Link do Facebooka"
                 className="w-[24px]"
                 href="https://www.facebook.com/profile.php?id=100063527889981"
               >
@@ -61,6 +62,7 @@ export function Footer() {
             </div>
             <div className="flex items-center transition-all hover:opacity-80">
               <a
+                title="Link od Instagrama"
                 className="w-[24px]"
                 href="https://www.instagram.com/przytulisko_klodawa_/"
               >
@@ -76,6 +78,7 @@ export function Footer() {
             </div>
             <div className="flex items-center transition-all hover:opacity-80">
               <a
+                title="Link od Tiktoka"
                 className="w-[24px]"
                 href="https://www.tiktok.com/@przytuliskoklodawa"
               >
@@ -94,6 +97,7 @@ export function Footer() {
         <div className="mx-auto flex flex-col gap-4 lg:ml-auto">
           <p className="text-xl font-semibold">JAK DOJECHAĆ</p>
           <iframe
+            title="Mapa google z zaznaczonym adresem schroniska"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2442.0112927953833!2d18.90377707651778!3d52.261339971994545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471b6d98f338b2b7%3A0x588b2e403ea23558!2sCegielniana%2015%2C%2062-650%20K%C5%82odawa!5e0!3m2!1spl!2spl!4v1742137746551!5m2!1spl!2spl"
             width="360"
             height="225"

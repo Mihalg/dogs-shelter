@@ -13,7 +13,7 @@ function LatestPosts() {
           <Image src={paw} alt="łapa" height={55} width={55} />
           Co nowego?
         </h2>
-        <div className="mx-auto grid grid-cols-1 gap-10 lg:w-full lg:grid-cols-3 lg:gap-6">
+        <div className="mx-auto w-full grid grid-cols-1 gap-10 lg:w-full lg:grid-cols-3 lg:gap-6">
           <Suspense fallback={<LatestPostsSkeleton />}>
             <PostCards range={3} />
           </Suspense>

@@ -21,6 +21,7 @@ export default function GeneralLayout({
 
         <div className="flex items-center transition-all hover:opacity-90 md:ml-4">
           <a
+            title="Link od Facebooka"
             className="w-[24px]"
             href="https://www.facebook.com/profile.php?id=100063527889981"
           >
@@ -36,6 +37,7 @@ export default function GeneralLayout({
         </div>
         <div className="flex items-center transition-all hover:opacity-90">
           <a
+            title="Link od Instagrama"
             className="w-[24px]"
             href="https://www.instagram.com/przytulisko_klodawa_/"
           >
@@ -51,6 +53,7 @@ export default function GeneralLayout({
         </div>
         <div className="flex items-center transition-all hover:opacity-90">
           <a
+            title="Link od Tiktoka"
             className="w-[24px]"
             href="https://www.tiktok.com/@przytuliskoklodawa"
           >

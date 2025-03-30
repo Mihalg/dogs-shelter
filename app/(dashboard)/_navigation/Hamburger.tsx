@@ -6,6 +6,7 @@ type HamburgerProps = {
 export default function Hamburger({ onClick, isActive }: HamburgerProps) {
   return (
     <button
+    title="Przycisk do otwierania menu"
       onClick={onClick}
       className={`hamburger hamburger--collapse absolute right-0 top-[7px] xl:hidden ${isActive ? "is-active pointer-events-none" : ""}`}
       type="button"
