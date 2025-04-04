@@ -29,7 +29,7 @@ function AdoptPage({
       <Suspense fallback={<Spinner />}>
         <AnnouncementsCards
           searchParams={searchParams}
-          className="mx-auto grid grid-cols-1 gap-10 md:grid-cols-3 lg:w-full lg:grid-cols-4 lg:gap-6"
+          className="mx-auto grid grid-cols-1 gap-10 md:grid-cols-2 lg:w-full lg:grid-cols-3 lg:gap-6"
         />
       </Suspense>
     </div>

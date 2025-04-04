@@ -133,15 +133,17 @@ export default async function AnnouncementsCards({
           return (
             <Link
               href={`/adopcja/${announcement.id}`}
-              className="w-fit justify-self-center overflow-hidden rounded-md text-dark-200 shadow-md transition-all hover:shadow-lg hover:saturate-[120%]"
+              className="w-fit justify-self-center overflow-hidden rounded-md object-cover text-dark-200 shadow-md transition-all hover:shadow-lg hover:saturate-[120%]"
               key={announcement.id}
             >
-              <Image
-                width={280}
-                height={160}
-                src={announcement.main_image}
-                alt={`Główne zdjęcie ogłoszenia ${announcement.name}`}
-              />
+              <div className="relative h-[300px] w-[300px] overflow-hidden object-center">
+                <Image
+                  fill
+                  className="object-cover object-top"
+                  src={announcement.main_image}
+                  alt={`Główne zdjęcie ogłoszenia ${announcement.name}`}
+                />
+              </div>
               <div className="space-y-2 px-4 py-2">
                 <div className="flex items-baseline justify-between">
                   <p className="text-3xl">{announcement.name}</p>

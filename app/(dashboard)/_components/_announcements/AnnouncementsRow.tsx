@@ -22,7 +22,7 @@ function AnnouncementsRow({
 
   return (
     <div
-      className={`grid h-[60px] grid-cols-[1fr_1fr_1fr_1fr_1fr_0.4fr] items-center gap-x-2 py-2`}
+      className={`grid grid-cols-[1fr_1fr_1fr_1fr_1fr_0.4fr] items-center gap-x-2 py-2`}
     >
       <div>
         <Image
