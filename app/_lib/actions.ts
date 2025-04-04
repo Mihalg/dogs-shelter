@@ -288,7 +288,7 @@ export async function createEditPost(formData: FormData) {
 
     if (!success) throw new Error(message);
 
-    addImage(data.id);
+    if (!link) addImage(data.id);
   }
 
   async function addImage(id: number) {
