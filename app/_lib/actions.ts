@@ -97,7 +97,7 @@ export async function createEditAnnouncement(formData: FormData) {
 
   if (
     !main_image ||
-    !images ||
+    !images?.length ||
     !name ||
     !age ||
     !breed ||
@@ -593,7 +593,7 @@ export async function deleteFolder(bucketName: string, folderPath: string) {
     return { success: true, message: "Folder jest pusty lub nie istnieje" };
   }
 
-  // List of path to delete
+  // List of paths to delete
   const filesToDelete = data.map((file) => `${folderPath}/${file.name}`);
 
   // Delete files

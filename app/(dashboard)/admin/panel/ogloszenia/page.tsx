@@ -27,8 +27,8 @@ function Announcements({
       <div>
         <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-center">
           <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-center">
-            <div className="flex gap-6">
-              <p className="text-2xl lg:basis-auto lg:text-3xl">
+            <div className="flex gap-6 sm:flex-row flex-col">
+              <p className="w-fit text-2xl lg:basis-auto lg:text-3xl">
                 Zwierzęta do adopcji
               </p>
               <ModalTrigger>Dodaj ogłoszenie</ModalTrigger>

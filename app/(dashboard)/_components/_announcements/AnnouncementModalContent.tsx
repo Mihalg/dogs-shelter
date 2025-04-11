@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/app/_components/Button";
 import ImagesUpload from "@/app/(dashboard)/_components/ImageUpload";
-import { Input } from "@/app/_components/Input";
 import { Label } from "@/app/(dashboard)/_components/Label";
 import { Textarea } from "@/app/(dashboard)/_components/Textarea";
+import { Button } from "@/app/_components/Button";
+import { Input } from "@/app/_components/Input";
 import { createEditAnnouncement } from "@/app/_lib/actions";
 import {
   getAnnouncementData,
@@ -12,8 +12,8 @@ import {
 } from "@/app/_lib/services";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useModalContext } from "../Modal";
 import Spinner from "../../../_components/Spinner";
+import { useModalContext } from "../Modal";
 
 type Announcement = {
   id: number;
@@ -33,7 +33,6 @@ export default function AnnouncementModalContent() {
   const id = params.get("announcementId");
 
   const { isLoading, setIsLoading, setIsOpen } = useModalContext();
-  const [isPending, setIsPending] = useState(false);
 
   // variables for handling images
   const formRef = useRef<HTMLFormElement>(null);
@@ -41,6 +40,8 @@ export default function AnnouncementModalContent() {
   const [additionalImages, setAdditionalImages] = useState<File[]>([]);
 
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
+  const [isPending, setIsPending] = useState(false);
+  const [state, setState] = useState("");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -55,10 +56,14 @@ export default function AnnouncementModalContent() {
     additionalImages.forEach((file) => {
       formData.append("images", file);
     });
-    setIsPending(true);
-    await createEditAnnouncement(formData);
-    setIsPending(false);
-    setIsOpen(false);
+    if (!mainImage || !additionalImages.length) {
+      setState("Wypełnij wszystkie pola formularza i dodaj zdjęcia");
+    } else {
+      setIsPending(true);
+      await createEditAnnouncement(formData);
+      setIsPending(false);
+      setIsOpen(false);
+    }
   };
 
   //fetches announcement if editing
@@ -85,14 +90,14 @@ export default function AnnouncementModalContent() {
   ) : (
     <>
       {isPending ? (
-        <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-dark-100/40">
+        <div className="fixed left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-dark-100/40 lg:h-full">
           <Spinner />
         </div>
       ) : null}
       <form
         ref={formRef}
         onSubmit={handleSubmit}
-        className="grid grid-cols-1 gap-x-8 gap-y-4 px-4 py-4 lg:grid-cols-4"
+        className="relative grid grid-cols-1 gap-x-8 gap-y-4 px-4 py-4 lg:grid-cols-4"
       >
         <input
           className="hidden"
@@ -180,12 +185,14 @@ export default function AnnouncementModalContent() {
             />
           </div>
         </div>
+
         <Button
           disabled={isPending}
           className="ml-auto mt-auto w-40 lg:col-start-1 lg:col-end-5"
         >
           Zapisz
         </Button>
+        {<p className="text-lg text-red-600">{state}</p>}
       </form>
     </>
   );

@@ -55,7 +55,7 @@ export default async function AnnouncementPage({
           <p className="lg:text-lg">
             {day} {month} {year}
           </p>
-          <div className="mt-1 flex basis-[380px] items-center justify-center gap-4 rounded-full bg-light-100 px-4 py-1 lg:text-lg">
+          <div className="mt-1 flex w-fit items-center justify-center gap-4 rounded-full bg-light-100 px-4 py-1 lg:text-lg">
             <div className="flex items-center gap-2">
               <Image src={paw} height={18} width={18} alt="rasa" />
               <p className="capitalize">{announcement.breed}</p>
