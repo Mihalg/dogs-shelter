@@ -208,6 +208,27 @@ export async function createEditAnnouncement(formData: FormData) {
         console.log("Add aditional images error:", imagesError);
       }
     });
+
+    const uploadPromises = imagesNames.map(async (name, i) => {
+      return supabase.storage
+        .from("announcements-images")
+        .upload(`/${id}/${name}`, images![i])
+        .then(({ error }) => {
+          if (error) {
+            console.error("Upload error:", error);
+          }
+          return { name, error };
+        });
+    });
+
+    const uploadResults = await Promise.all(uploadPromises);
+
+    const failedUploads = uploadResults.filter((r) => r.error);
+    if (failedUploads.length > 0) {
+      console.log("Some uploads failed:", failedUploads);
+    } else {
+      console.log("All images uploaded successfully!");
+    }
   }
 
   revalidatePath("/admin/panel/ogloszenia");

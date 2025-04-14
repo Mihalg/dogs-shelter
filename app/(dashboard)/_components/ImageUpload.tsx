@@ -27,7 +27,7 @@ const ImageUpload = ({
   multiple = false,
   id,
   defaultUrls,
-  maxFiles = 5,
+  maxFiles = 4,
   setImages,
   images,
 }: ImageUploadProps) => {
