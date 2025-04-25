@@ -21,7 +21,7 @@ export default function Contact() {
             <p>
               Darowizny pieniężne prosimy przelewać na Konto Przytuliska dla
               Bezdomych Zwierząt w Kłodawie 65 1020 2762 0000 1002 0143 6369
-              koniecznie z tytułem „Pomoc dla Przytuliska”.
+              koniecznie z tytułem „Darowizna na rzecz przytuliska”. (Konto bankowe jest założone przez osobę prywatną - opiekuna psów z Przytuliska.)
             </p>
           </div>
           <div className="mx-auto max-w-[400px] text-center">
