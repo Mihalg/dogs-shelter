@@ -34,7 +34,7 @@ export default function NavBar() {
               width={100}
             />
             <p className="text-center text-lg font-semibold text-dark-200 lg:hidden">
-              Przytulisko dla Bezdomnych Zwierząt w Kłodawie
+              Przytulisko dla Bezdomnych Psów w Kłodawie
             </p>
           </Link>
         </li>

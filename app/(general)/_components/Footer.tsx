@@ -19,7 +19,7 @@ export function Footer() {
             width={100}
           />
           <p className="text-center text-lg font-semibold">
-            Przytulisko dla Bezdomnych Zwierząt w Kłodawie
+            Przytulisko dla Bezdomnych Psów w Kłodawie
           </p>
         </Link>
 
