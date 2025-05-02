@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Przytulisko dla Bezdomnych Psów w Kłodawie",
   description:
     "Strona internetowa Przytuliska dla Bezdomnych Psów w Kłodawie – znajdź swojego przyszłego przyjaciela, sprawdź aktualności i dowiedz się, jak możesz pomóc poprzez adopcję, wolontariat lub wsparcie schroniska.",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
